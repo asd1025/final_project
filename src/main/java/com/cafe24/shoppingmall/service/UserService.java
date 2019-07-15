@@ -8,8 +8,10 @@ import com.cafe24.shoppingmall.vo.UserVo;
 public class UserService {
 
 	public boolean checkId(String id) {
-		System.out.println("haha");
-		return true;
+		if("test".equals(id)){
+			return true;
+		}
+			return false;
 	}
 
 	public void join(UserVo userVo) {

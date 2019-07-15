@@ -34,7 +34,7 @@ public class UserController {
 		boolean isExistedId = userService.checkId(id);
 		if(isExistedId)
 		return JSONResult.fail("ID Duplication");
-		else return JSONResult.success("success");
+		else return JSONResult.success(id);
 	}
 	
 	/**
@@ -54,8 +54,7 @@ public class UserController {
 	/**
 	 * 로그인 check
 	 * POST로 받은 ID, PASSWORD로 로그인 체크를 하여,
-	 * 존재한다면 해당 UserVo 객체를, 없다면 null 을 반환한
-	 * 로그인 성공시 authUser session에 저장한다
+	 * 존재한다면 해당 UserVo 객체를, 없다면 null 을 반환한다
 	 **/
 	@ApiOperation(value="로그인")
 	@RequestMapping(value="/login",method=RequestMethod.POST)
