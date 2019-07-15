@@ -1,5 +1,8 @@
 package com.cafe24.shoppingmall.vo;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class UserVo {
 	private enum Gender{
 		MALE,FEMALE
@@ -8,8 +11,14 @@ public class UserVo {
 		MEMBER, ADMIN, SECESSION
 	}
 	
+	@NotEmpty
+	@Length(min=2,max=8)
 	private String id;
+	
+	@NotEmpty
+	@Length(min=8, max=20,message="비밀번호는 8자 이상 20자 이하로 입력해야 합니다.")
 	private String password;
+	
 	private String name;
 	private String phone;
 	private String email;
