@@ -30,6 +30,7 @@ public class UserController {
 	@ApiOperation(value="아이디 중복 조회")
 	@RequestMapping(value="/checkid/{id}",method=RequestMethod.GET)
 	public JSONResult checkId(@PathVariable(value="id") String id) {
+
 		boolean isExistedId = userService.checkId(id);
 		if(isExistedId)
 		return JSONResult.fail("ID Duplication");
@@ -64,6 +65,7 @@ public class UserController {
 			return JSONResult.success(userVo);
 		}
 		return JSONResult.fail("login fail");
+
 	}
 	
 	
