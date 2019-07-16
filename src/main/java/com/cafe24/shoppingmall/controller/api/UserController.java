@@ -1,8 +1,19 @@
 package com.cafe24.shoppingmall.controller.api;
 
-import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,26 +26,42 @@ import com.cafe24.shoppingmall.vo.UserVo;
 
 import io.swagger.annotations.ApiOperation;
 
+import java.util.List;
+import java.util.Set;
+
 @RestController("userAPIController")
 @RequestMapping("/api/user")
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private MessageSource messageSource;
 	
 	/**
 	 *  아이디 중복 체크
 	 *  Get으로 받은 id의 중복체크
 	 *  true : id 사용불가 (중복) / false : id 사용 가능
 	 * **/
-	@ApiOperation(value="아이디 중복 조회")
-	@RequestMapping(value="/checkid/{id}",method=RequestMethod.GET)
-	public JSONResult checkId(@PathVariable(value="id") String id) {
 
+	@ApiOperation(value="아이디 중복 조회")
+	@ApiImplicitParam(name="id",value="회원ID",required = true, dataType = "string", paramType = "path", defaultValue = "")
+	@RequestMapping(value="/checkId/{id}",method=RequestMethod.GET)
+	public ResponseEntity<JSONResult> checkId(@PathVariable(value="id") String id) {
+		Validator validator= Validation.buildDefaultValidatorFactory().getValidator();
+		Set<ConstraintViolation<UserVo>> validatorResults = validator.validateProperty(new UserVo(id),"id");
+		if(!validatorResults.isEmpty()){
+			for(ConstraintViolation<UserVo> validatorResult:validatorResults){
+				String message=messageSource.getMessage("Id.userVo.id",null, LocaleContextHolder.getLocale());
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(message));
+			}
+		}
 		boolean isExistedId = userService.checkId(id);
-		if(isExistedId)
-		return JSONResult.fail("ID Duplication");
-		else return JSONResult.success(id);
+		if(isExistedId){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("ID 중복"));
+		}
+		else return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
 	}
 	
 	/**
@@ -46,9 +73,19 @@ public class UserController {
 	 * */
 	@ApiOperation(value="회원 가입")
 	@RequestMapping(value="/join",method=RequestMethod.POST)
-	public JSONResult join(@RequestBody UserVo userVo) {
-		userService.join(userVo);
-		return JSONResult.success(userVo);
+	@ApiImplicitParams({
+	@ApiImplicitParam(name="userVo",value="회원",required = true, dataType = "userVo", paramType = "query", defaultValue = "")
+	})
+	public ResponseEntity<JSONResult> join(@RequestBody @Valid UserVo userVo, BindingResult result) {
+	    if(result.hasErrors()){
+	        List<ObjectError> list = result.getAllErrors();
+	        for(ObjectError error:list){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(error.getDefaultMessage()));
+            }
+        }
+		boolean joinReuslt=userService.join(userVo);
+	    if(joinReuslt)  return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(userVo));
+	    else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("회원 가입을 실패했습니다."));
 	}
 	
 	/**
@@ -58,12 +95,15 @@ public class UserController {
 	 **/
 	@ApiOperation(value="로그인")
 	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public JSONResult login(@RequestBody UserVo userVo) {
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="userVo",value="회원",required = true, dataType = "userVo", paramType = "query", defaultValue = "")
+	})
+	public ResponseEntity<JSONResult> login(@RequestBody UserVo userVo) {
 		UserVo authUser = userService.login(userVo);
 		if(authUser!=null) {
-			return JSONResult.success(userVo);
+		 return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(userVo));
 		}
-		return JSONResult.fail("login fail");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
 
 	}
 	

@@ -1,7 +1,11 @@
 package com.cafe24.shoppingmall.vo;
 
+import com.cafe24.shoppingmall.validator.constraints.ValidID;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
 
 public class UserVo {
 	private enum Gender{
@@ -11,22 +15,32 @@ public class UserVo {
 		MEMBER, ADMIN, SECESSION
 	}
 	
-	@NotEmpty
-	@Length(min=2,max=8)
+	@ValidID
 	private String id;
 	
 	@NotEmpty
+	@Pattern(regexp="(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,20}", message="비밀번호는 8자 이상 20자 이하의 알파벳, 숫자, 특수문자를 조합하여 작성해야 합니다.")
 	@Length(min=8, max=20,message="비밀번호는 8자 이상 20자 이하로 입력해야 합니다.")
 	private String password;
-	
+
+	@NotEmpty
 	private String name;
+	@NotEmpty
+	@Pattern(regexp="[0-9]{3}-[0-9]{4}-[0-9]{4}",message="숫자만 입력하세요!")
 	private String phone;
+	@NotEmpty
+	@Email(message = "올바른 이메일 형식이 아닙니다.")
 	private String email;
+
 	private String birth;
 	private Gender gender;
 	private String refundAccount;
 	private MembershipStatus membershipStatus;
-	
+
+	public UserVo(String id) {
+		this.id=id;
+	}
+
 	public UserVo() {
 		this.gender = Gender.MALE;
 		this.membershipStatus = MembershipStatus.MEMBER;

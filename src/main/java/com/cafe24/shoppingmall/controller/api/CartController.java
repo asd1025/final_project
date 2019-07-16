@@ -2,13 +2,13 @@ package com.cafe24.shoppingmall.controller.api;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.cafe24.shoppingmall.vo.CartVo;
+import com.cafe24.shoppingmall.vo.UserVo;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,59 +16,49 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.shoppingmall.dto.JSONResult;
 import com.cafe24.shoppingmall.service.CartService;
-import com.cafe24.shoppingmall.util.CookieIdMaker;
-import com.cafe24.shoppingmall.vo.CartVo;
-import com.cafe24.shoppingmall.vo.ProductVo;
-import com.cafe24.shoppingmall.vo.UserVo;
 
 import io.swagger.annotations.ApiOperation;
 
+
 @RestController("cartAPIController")
-@RequestMapping("/api/cart")
+@RequestMapping("/api")
 public class CartController {
 	
 	@Autowired
 	CartService cartService;
 	
-	
-	// post 방식으로 다시 고치기 수량이랑 세션에있는 아이디 같이 넘겨줘야함 
-	
+
 	/**
 	 *  장바구니 담기
-	 *  SESSION 값 authUser의 유무를 확인하여 회원을 체크한다.
-	 *  비회원일시, 쿠키 아이디 랜덤값을 생성하여 DB에 저장한다.
-	 *  쿠키 아이디가 없다면 보여주지 않는다 ( 이때, DB에는 저장되어 있는 상태다)
-	 *  쿠키의 보관은 1주
+	 *  cartVo의 정보를 카트에 담는다.
 	 * */
 	@ApiOperation(value="장바구니 담기")
-	@RequestMapping(value="/addCart/{no}",method=RequestMethod.GET)
-	public JSONResult addCart(@PathVariable(value="no") int no,HttpSession session,@CookieValue(value="cookiId") String cookieId,
-			HttpServletResponse response) {
-		UserVo vo=(UserVo) session.getAttribute("authUser");
-		// 회원일떄 
-		if(vo!=null) {
-			cartService.addCart(no);
-		}else {// 비회원일떄  
-			if(cookieId==null) {
-				Cookie cartCookie=new Cookie("cart",CookieIdMaker.generateRandomCookieId());
-				cartCookie.setMaxAge(60*60*24*7); 
-				response.addCookie(cartCookie);
-			} 
-			cartService.addCart(no);
+	@RequestMapping(value="/cart",method=RequestMethod.POST)
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="cartVo",value="cartVo",required = true, dataType = "cartVo", paramType = "query", defaultValue = "")
+	})
+	public ResponseEntity<JSONResult> addCart(@RequestBody CartVo cartVo) {
+		boolean isAddCart = cartService.addCart(cartVo);
+		if(!isAddCart){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("카트 담기 실패"));
 		}
-		return JSONResult.success(no);
+		else return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(cartVo));
 	}
-	
+
+	/**
+	 * 회원 아이디의 장바구니 상품들을 다 보여준다.
+	 */
 	@ApiOperation(value="장바구니 보기")
-	@RequestMapping(value="/showCart",method=RequestMethod.POST)
-	public JSONResult showCart(@RequestBody int no) {
-		ArrayList<ProductVo> list=cartService.getList(no);
+	@ApiImplicitParam(name="id",value="회원id",required = true, dataType = "String", paramType = "path", defaultValue = "")
+	@RequestMapping(value="/cart/{id}",method=RequestMethod.GET)
+	public JSONResult showCart(@RequestBody String id) {
+		ArrayList<CartVo> list=cartService.getList(id);
 		return JSONResult.success(list);
 	}
-	
+
 	@ApiOperation(value="장바구니 삭제")
-	@RequestMapping(value="/showCart",method=RequestMethod.DELETE)
-	public JSONResult deleteCart(@RequestBody int no) {
+	@RequestMapping(value="/cart/{id}/{no}",method=RequestMethod.DELETE)
+	public JSONResult deleteCart(@RequestBody int no,String id) {
 		cartService.deleteCart(no);
 		return JSONResult.success(true);
 	}

@@ -7,6 +7,9 @@ import com.cafe24.shoppingmall.vo.UserVo;
 @Service
 public class UserService {
 
+	/***
+	 * 	id 중복 체크. 중복이라면 true/ 중복이 아니라면 false
+	 * */
 	public boolean checkId(String id) {
 		if("test".equals(id)){
 			return true;
@@ -14,20 +17,25 @@ public class UserService {
 			return false;
 	}
 
-	public void join(UserVo userVo) {
-		// join 
+	public boolean join(UserVo userVo) {
+		// join
+		return true;
 	}
  
 
 	public UserVo login(UserVo userVo) {
-		userVo=new UserVo();
-		userVo.setId("user2");
-		userVo.setPassword("1234");
-		userVo.setName("김가나");
-		userVo.setPhone("010-9999-4444");
-		userVo.setEmail("asd@naver.com");
-		userVo.setBirth("920101");
-		return userVo;
+		UserVo user=new UserVo();
+		user.setId("user2");
+		user.setPassword("123456!a");
+		user.setName("김가나");
+		user.setPhone("010-9999-4444");
+		user.setEmail("asd@naver.com");
+		user.setBirth("920101");
+
+		if((user.getId().equals(userVo.getId()))&&(user.getPassword().equals(userVo.getPassword())))
+			return userVo;
+
+		return null;
 	}
 	
 
