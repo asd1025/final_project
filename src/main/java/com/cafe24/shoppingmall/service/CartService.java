@@ -35,11 +35,15 @@ public class CartService {
 	/**
 	 *  삭제 처리가 들어온 상품을 카트에서 삭제해준다.
 	 * **/
-	public void deleteCart(int no) {
-		// TODO Auto-generated method stub
-		
+    public boolean deleteCartProduct(int no,String id) {
+		return true;
 	}
-	
-	
+
+	/**
+	 *  해당 ID의 장바구니들을 모두 삭제한다.
+	 * **/
+	public boolean deleteCart(String id) {
+		return true;
+	}
 
 }

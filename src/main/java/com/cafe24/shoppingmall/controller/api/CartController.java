@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cafe24.shoppingmall.dto.JSONResult;
 import com.cafe24.shoppingmall.service.CartService;
@@ -21,7 +18,7 @@ import io.swagger.annotations.ApiOperation;
 
 
 @RestController("cartAPIController")
-@RequestMapping("/api")
+@RequestMapping("/api/cart")
 public class CartController {
 	
 	@Autowired
@@ -33,7 +30,7 @@ public class CartController {
 	 *  cartVo의 정보를 카트에 담는다.
 	 * */
 	@ApiOperation(value="장바구니 담기")
-	@RequestMapping(value="/cart",method=RequestMethod.POST)
+	@RequestMapping(value="/",method=RequestMethod.POST)
 	@ApiImplicitParams({
 			@ApiImplicitParam(name="cartVo",value="cartVo",required = true, dataType = "cartVo", paramType = "query", defaultValue = "")
 	})
@@ -49,20 +46,41 @@ public class CartController {
 	 * 회원 아이디의 장바구니 상품들을 다 보여준다.
 	 */
 	@ApiOperation(value="장바구니 보기")
-	@ApiImplicitParam(name="id",value="회원id",required = true, dataType = "String", paramType = "path", defaultValue = "")
-	@RequestMapping(value="/cart/{id}",method=RequestMethod.GET)
-	public JSONResult showCart(@RequestBody String id) {
+	@ApiImplicitParam(name="id",value="회원 아이디",required = true, dataType = "string", paramType = "path", defaultValue = "")
+	@RequestMapping(value="/{id}",method=RequestMethod.GET)
+	public ResponseEntity<JSONResult> showCart(@PathVariable(value="id") String id) {
 		ArrayList<CartVo> list=cartService.getList(id);
-		return JSONResult.success(list);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
 	}
 
-	@ApiOperation(value="장바구니 삭제")
-	@RequestMapping(value="/cart/{id}/{no}",method=RequestMethod.DELETE)
-	public JSONResult deleteCart(@RequestBody int no,String id) {
-		cartService.deleteCart(no);
-		return JSONResult.success(true);
+
+	/***
+	 *
+	 *  해당 상품을 삭제한다
+	 */
+	@ApiOperation(value="카트 상품 삭제")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "id", value = "회원 아이디", required = true, dataType = "string", paramType = "path", defaultValue = ""),
+			@ApiImplicitParam(name = "no", value = "상품번호", required = true, dataType = "int", paramType = "path", defaultValue = "")
+
+	})
+	@DeleteMapping(value="/{id}/{no}")
+	public ResponseEntity<JSONResult> deleteCartProduct(@PathVariable int no,@PathVariable String id) {
+		cartService.deleteCartProduct(no,id);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
 	}
-	 
+
+	/***
+	 *
+	 *  해당 ID의 장바구니를 모두 삭제한다
+	 */
+	@ApiOperation(value="장바구니 전체 삭제")
+	@ApiImplicitParam(name = "id", value = "회원 아이디", required = true, dataType = "string", paramType = "path", defaultValue = "")
+	@DeleteMapping(value="/{id}")
+	public ResponseEntity<JSONResult> deleteCart(@PathVariable String id) {
+		cartService.deleteCart(id);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
+	}
 	
 	
 	

@@ -14,11 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cafe24.shoppingmall.dto.JSONResult;
 import com.cafe24.shoppingmall.service.UserService;
@@ -72,7 +68,7 @@ public class UserController {
 	 * 
 	 * */
 	@ApiOperation(value="회원 가입")
-	@RequestMapping(value="/join",method=RequestMethod.POST)
+	@PostMapping(value="/join")
 	@ApiImplicitParams({
 	@ApiImplicitParam(name="userVo",value="회원",required = true, dataType = "userVo", paramType = "query", defaultValue = "")
 	})
@@ -94,7 +90,7 @@ public class UserController {
 	 * 존재한다면 해당 UserVo 객체를, 없다면 null 을 반환한다
 	 **/
 	@ApiOperation(value="로그인")
-	@RequestMapping(value="/login",method=RequestMethod.POST)
+	@PostMapping(value="/login")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name="userVo",value="회원",required = true, dataType = "userVo", paramType = "query", defaultValue = "")
 	})

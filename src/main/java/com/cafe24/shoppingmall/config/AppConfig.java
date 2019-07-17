@@ -13,4 +13,5 @@ import com.cafe24.config.app.MyBatisConfig;
 @ComponentScan({"com.cafe24.shoppingmall.service", "com.cafe24.shoppingmall.repository", "com.cafe24.shoppingmall.aspect"})
 // @Import({DBConfig.class})
 public class AppConfig {
+
 }

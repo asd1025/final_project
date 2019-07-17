@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -91,5 +93,64 @@ public class CartControllerTest {
 
     }
 
+    @Ignore
+    @Test
+    public void testShowCart() throws Exception {
 
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(get("/api/cart/{id}","user1").contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400
+         resultActions = mockMvc
+                .perform(get("/api/cart/{id}","user2").contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+
+    }
+
+    @Ignore
+    @Test
+    public void testDeleteCartProduct() throws Exception {
+
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(delete("/api/cart/{id}/{no}","user1",1).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400
+        resultActions = mockMvc
+                .perform(delete("/api/cart/{id}/{no}","user2",2).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+
+    }
+    @Test
+    public void testDeleteCart() throws Exception {
+
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(delete("/api/cart/{id}","user1").contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400
+         resultActions = mockMvc
+                .perform(delete("/api/cart/{id}","user2").contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+
+    }
 }
