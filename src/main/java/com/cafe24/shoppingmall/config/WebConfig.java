@@ -1,5 +1,6 @@
 package com.cafe24.shoppingmall.config;
 
+import com.cafe24.config.app.MyBatisConfig;
 import com.cafe24.config.web.MessageConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
