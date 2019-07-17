@@ -2,7 +2,7 @@
 /.classpath
 /.project
 /.settings/
-
+jdbc.properties
 
 
 # Created by https://www.gitignore.io/api/java,macos,maven,windows,eclipse
