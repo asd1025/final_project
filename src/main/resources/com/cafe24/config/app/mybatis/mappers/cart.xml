@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="user">
+<mapper namespace="cart">
 
-    <insert id="join" parameterType="uservo"  >
+    <insert id="add" parameterType="cartvo"  >
         <![CDATA[
             insert into member (id, password, name, phone, email, birth,gender)
             values (#{id},sha1(#{password}),hex(AES_ENCRYPT(#{name},sha1(#{name})))

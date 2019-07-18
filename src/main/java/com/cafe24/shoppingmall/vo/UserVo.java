@@ -8,13 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 public class UserVo {
-	private enum Gender{
-		MALE,FEMALE
-	}
-	private enum MembershipStatus{
-		MEMBER, ADMIN, SECESSION
-	}
-	
+
 	@ValidID
 	private String id;
 	
@@ -33,17 +27,17 @@ public class UserVo {
 	private String email;
 
 	private String birth;
-	private Gender gender;
+	private String gender;
 	private String refundAccount;
-	private MembershipStatus membershipStatus;
+	private String membershipStatus;
 
 	public UserVo(String id) {
 		this.id=id;
 	}
 
 	public UserVo() {
-		this.gender = Gender.MALE;
-		this.membershipStatus = MembershipStatus.MEMBER;
+		this.gender = "MALE";
+		this.membershipStatus = "MEMBER";
 	}
 	public String getId() {
 		return id;
@@ -81,10 +75,10 @@ public class UserVo {
 	public void setBirth(String birth) {
 		this.birth = birth;
 	}
-	public Gender getGender() {
+	public String getGender() {
 		return gender;
 	}
-	public void setGender(Gender gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 	public String getRefundAccount() {
@@ -93,10 +87,10 @@ public class UserVo {
 	public void setRefundAccount(String refundAccount) {
 		this.refundAccount = refundAccount;
 	}
-	public MembershipStatus getMembershipStatus() {
+	public String getMembershipStatus() {
 		return membershipStatus;
 	}
-	public void setMembershipStatus(MembershipStatus membershipStatus) {
+	public void setMembershipStatus(String membershipStatus) {
 		this.membershipStatus = membershipStatus;
 	}
 	

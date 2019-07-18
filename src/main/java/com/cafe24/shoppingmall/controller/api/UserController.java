@@ -79,6 +79,7 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(error.getDefaultMessage()));
             }
         }
+
 		boolean joinReuslt=userService.join(userVo);
 	    if(joinReuslt)  return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(userVo));
 	    else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("회원 가입을 실패했습니다."));
@@ -97,7 +98,7 @@ public class UserController {
 	public ResponseEntity<JSONResult> login(@RequestBody UserVo userVo) {
 		UserVo authUser = userService.login(userVo);
 		if(authUser!=null) {
-		 return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(userVo));
+		 return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(authUser));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
 
