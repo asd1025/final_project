@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 
 public class UserVo {
 
@@ -30,6 +31,8 @@ public class UserVo {
 	private String gender;
 	private String refundAccount;
 	private String membershipStatus;
+	private ArrayList<CartVo> cartList;
+
 
 	public UserVo(String id) {
 		this.id=id;
@@ -93,9 +96,11 @@ public class UserVo {
 	public void setMembershipStatus(String membershipStatus) {
 		this.membershipStatus = membershipStatus;
 	}
-	
-	
-	
-	
 
+	public ArrayList<CartVo> getCartList() {
+		return cartList;
+	}
+	public void setCartList(ArrayList<CartVo> cartList) {
+		this.cartList = cartList;
+	}
 }

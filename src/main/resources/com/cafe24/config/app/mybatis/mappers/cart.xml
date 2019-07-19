@@ -2,35 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cart">
 
-    <insert id="add" parameterType="cartvo"  >
+    <insert id="insert" parameterType="cartvo"  >
         <![CDATA[
-            insert into member (id, password, name, phone, email, birth,gender)
-            values (#{id},sha1(#{password}),hex(AES_ENCRYPT(#{name},sha1(#{name})))
-                ,hex(AES_ENCRYPT(#{phone},sha1(#{phone})))
-                ,hex(AES_ENCRYPT(#{email},sha1(#{email})))
-            ,#{birth},#{gender})
+			insert into cart (id, quantity, stock_no) values
+			(#{id},#{quantity},#{stockNo})
 		]]>
     </insert>
 
-   <select id="checkById"  parameterType="String"  resultType="string">
+   <select id="getList"  parameterType="String"  resultType="cartvo">
 		<![CDATA[
-		select id
-		  from member
-		 where id = #{value}
+			select  no,id,quantity,c.stock_no as stockNo, update_date as updateDate,s.final_option as finalOption
+			,s.product_name as productName, s.thumb_img as thumbImg
+			from cart c, stock s
+			where c.stock_no=s.stock_no and c.id=#{value}
 		]]>
 	</select>
+	<delete id="deleteCartByNo"  parameterType="map">
+		delete from cart where id=#{id} and stock_no=#{stockNo}
+	</delete>
+	<delete id="deleteAllCartById"  parameterType="string">
+		delete from cart where id=#{value}
+	</delete>
 
-
-    <select id="login" parameterType="uservo"  resultType="uservo">
-		<![CDATA[
-		select id,  AES_DECRYPT(UNHEX(name),sha1(#{name})) name
-        , AES_DECRYPT(UNHEX(phone),sha1(#{phone})) phone
-        ,AES_DECRYPT(UNHEX(email),sha1(#{email})) email
-        ,birth,refundaccount as refundAccount
-        ,membership_status as membershipStatus, joindate as joinDate
-        from member where id=#{id} and password=sha1(#{password})
-		]]>
-	</select>
+	<!--
+        <select id="login" parameterType="uservo"  resultType="uservo">
+            <![CDATA[
+            select id,  AES_DECRYPT(UNHEX(name),sha1(#{name})) name
+            , AES_DECRYPT(UNHEX(phone),sha1(#{phone})) phone
+            ,AES_DECRYPT(UNHEX(email),sha1(#{email})) email
+            ,birth,refundaccount as refundAccount
+            ,membership_status as membershipStatus, joindate as joinDate
+            from member where id=#{id} and password=sha1(#{password})
+            ]]>
+        </select>-->
 
     <!--
     <select id="getByEmailAndPassword" resultType="uservo" parameterType='map'>

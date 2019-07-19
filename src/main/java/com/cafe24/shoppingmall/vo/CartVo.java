@@ -4,8 +4,11 @@ public class CartVo {
     private int no; //장바구니 번호
     private String id;
     private int quantity; // 상품의 수량
-    private StockVo stockVo; // 상품재고
+    private int stockNo; //  상품 번호
     private String updateDate;
+
+    private String productName;
+    private String thumbImg; // 대표사진
 
     public int getNo() {
         return no;
@@ -31,12 +34,12 @@ public class CartVo {
         this.quantity = quantity;
     }
 
-    public StockVo getStockVo() {
-        return stockVo;
+    public int getStockNo() {
+        return stockNo;
     }
 
-    public void setStockVo(StockVo stockVo) {
-        this.stockVo = stockVo;
+    public void setStockNo(int stockNo) {
+        this.stockNo = stockNo;
     }
 
     public String getUpdateDate() {
@@ -47,14 +50,32 @@ public class CartVo {
         this.updateDate = updateDate;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getThumbImg() {
+        return thumbImg;
+    }
+
+    public void setThumbImg(String thumbImg) {
+        this.thumbImg = thumbImg;
+    }
+
     @Override
     public String toString() {
         return "CartVo{" +
                 "no=" + no +
                 ", id='" + id + '\'' +
                 ", quantity=" + quantity +
-                ", stockVo=" + stockVo +
+                ", stockNo=" + stockNo +
                 ", updateDate='" + updateDate + '\'' +
+                ", productName='" + productName + '\'' +
+                ", thumbImg='" + thumbImg + '\'' +
                 '}';
     }
 }
