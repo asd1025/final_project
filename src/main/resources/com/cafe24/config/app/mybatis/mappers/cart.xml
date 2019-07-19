@@ -32,7 +32,7 @@
 		<![CDATA[ delete from cart where id=#{value} ]]>
 	</delete>
 	<update id="update" parameterType="cartvo">
-		<![CDATA[ update cart set quantity = #{quantity} where no=#{no}  ]]>
+		<![CDATA[ update cart set quantity = #{quantity} where id=#{id} and stock_no=#{stockNo} ]]>
 	</update>
 
 

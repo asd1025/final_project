@@ -168,8 +168,9 @@ public class CartControllerTest {
 
         // 200
         CartVo cartVo = new CartVo();
-        cartVo.setQuantity(5);
-        cartVo.setNo(17);
+        cartVo.setId("asd4");
+        cartVo.setStockNo(3);
+        cartVo.setQuantity(7);
 
 
         ResultActions resultActions = mockMvc
