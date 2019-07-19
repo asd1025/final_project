@@ -63,7 +63,7 @@ public class CartControllerTest {
         // 200
         CartVo cartVo = new CartVo();
         cartVo.setId("asd4");
-        cartVo.setQuantity(1);
+        cartVo.setQuantity(10);
         cartVo.setStockNo(4);
 
 
@@ -72,21 +72,21 @@ public class CartControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(cartVo)));
 
-        resultActions.andExpect(status().isOk()).andDo(print()).
-                andExpect(jsonPath("$.result", is("success")));
-          cartVo = new CartVo();
-        cartVo.setId("asd4");
-        cartVo.setQuantity(2);
-        cartVo.setStockNo(3);
-
-
-          resultActions = mockMvc
-                .perform(post("/api/cart")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(cartVo)));
-
-        resultActions.andExpect(status().isOk()).andDo(print()).
-                andExpect(jsonPath("$.result", is("success")));
+//        resultActions.andExpect(status().isOk()).andDo(print()).
+//                andExpect(jsonPath("$.result", is("success")));
+//          cartVo = new CartVo();
+//        cartVo.setId("asd4");
+//        cartVo.setQuantity(2);
+//        cartVo.setStockNo(3);
+//
+//
+//          resultActions = mockMvc
+//                .perform(post("/api/cart")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(new Gson().toJson(cartVo)));
+//
+//        resultActions.andExpect(status().isOk()).andDo(print()).
+//                andExpect(jsonPath("$.result", is("success")));
         // 400
 
 //        resultActions = mockMvc
@@ -161,4 +161,30 @@ public class CartControllerTest {
 
 
     }
+
+    @Test
+    public void testUpdateCart() throws Exception {
+
+
+        // 200
+        CartVo cartVo = new CartVo();
+        cartVo.setQuantity(5);
+        cartVo.setNo(17);
+
+
+        ResultActions resultActions = mockMvc
+                .perform(put("/api/cart")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(cartVo)));
+
+        // 400
+//         resultActions = mockMvc
+//                .perform(delete("/api/cart/{id}","user2").contentType(MediaType.APPLICATION_JSON));
+//
+//        resultActions.andExpect(status().isBadRequest()).andDo(print())
+//                .andExpect(jsonPath("$.result", is("fail")));
+
+
+    }
+
 }

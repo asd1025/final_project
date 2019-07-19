@@ -29,9 +29,9 @@ public class CartController {
 	 *  장바구니 담기
 	 *  cartVo의 정보를 카트에 담는다.
 	 * */
-	
+
 	@ApiOperation(value="장바구니 담기")
-	@RequestMapping(value="",method=RequestMethod.POST)
+	@PostMapping(value="")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name="cartVo",value="cartVo",required = true, dataType = "cartVo", paramType = "query", defaultValue = "")
 	})
@@ -68,7 +68,7 @@ public class CartController {
 	})
 	@DeleteMapping(value="/{id}/{stock_no}")
 	public ResponseEntity<JSONResult> deleteCartBynNo(@PathVariable int stock_no,@PathVariable String id) {
-		if(cartService.deleteCartBynNo(stock_no,id)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
+		if(cartService.deleteCartByNo(stock_no,id)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
 	}
 
@@ -83,10 +83,18 @@ public class CartController {
 		if(cartService.deleteAllCartById(id)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
 	}
-	
-	
-	
-		
+
+	/***
+	 * 카트 안의 물품 수량을 수정한다.
+	 */
+	@ApiOperation(value="장바구니 수정")
+	@ApiImplicitParam(name="cartVo",value="cartVo",required = true, dataType = "cartVo", paramType = "query", defaultValue = "")
+	@PutMapping(value="")
+	public ResponseEntity<JSONResult> updateCart(@RequestBody CartVo cartVo) {
+		if(cartService.updateCart(cartVo)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
+	}
+
 	
 	
 	

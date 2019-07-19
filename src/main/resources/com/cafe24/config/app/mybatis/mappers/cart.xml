@@ -17,12 +17,24 @@
 			where c.stock_no=s.stock_no and c.id=#{value}
 		]]>
 	</select>
+	<select id="getCartByIdAndStockNo"  parameterType="cartvo"  resultType="cartvo">
+		<![CDATA[
+			select  no,id,quantity,c.stock_no as stockNo, update_date as updateDate,s.final_option as finalOption
+			,s.product_name as productName, s.thumb_img as thumbImg
+			from cart c, stock s
+			where c.stock_no=s.stock_no and c.id=#{id} and c.stock_no=#{stockNo}
+		]]>
+	</select>
 	<delete id="deleteCartByNo"  parameterType="map">
-		delete from cart where id=#{id} and stock_no=#{stockNo}
+		<![CDATA[ delete from cart where id=#{id} and stock_no=#{stockNo} ]]>
 	</delete>
 	<delete id="deleteAllCartById"  parameterType="string">
-		delete from cart where id=#{value}
+		<![CDATA[ delete from cart where id=#{value} ]]>
 	</delete>
+	<update id="update" parameterType="cartvo">
+		<![CDATA[ update cart set quantity = #{quantity} where no=#{no}  ]]>
+	</update>
+
 
 	<!--
         <select id="login" parameterType="uservo"  resultType="uservo">
