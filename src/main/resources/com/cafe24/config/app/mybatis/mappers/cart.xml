@@ -35,43 +35,4 @@
 		<![CDATA[ update cart set quantity = #{quantity} where id=#{id} and stock_no=#{stockNo} ]]>
 	</update>
 
-
-	<!--
-        <select id="login" parameterType="uservo"  resultType="uservo">
-            <![CDATA[
-            select id,  AES_DECRYPT(UNHEX(name),sha1(#{name})) name
-            , AES_DECRYPT(UNHEX(phone),sha1(#{phone})) phone
-            ,AES_DECRYPT(UNHEX(email),sha1(#{email})) email
-            ,birth,refundaccount as refundAccount
-            ,membership_status as membershipStatus, joindate as joinDate
-            from member where id=#{id} and password=sha1(#{password})
-            ]]>
-        </select>-->
-
-    <!--
-    <select id="getByEmailAndPassword" resultType="uservo" parameterType='map'>
-		<![CDATA[
-		select no, name
-		  from user
-		 where email=#{email }
-		   and password=#{password }
-		]]>
-	</select>
-
-    <update id="update" parameterType="uservo">
-        <![CDATA[
-		update user
-		   set name = #{name },
-		]]>
-        <if test="password != ''">
-            <![CDATA[
-			password=#{password },
-			]]>
-        </if>
-        <![CDATA[
-		       gender = #{gender }
-
-		 where no = #{no }
-		]]>
-    </update>-->
 </mapper>

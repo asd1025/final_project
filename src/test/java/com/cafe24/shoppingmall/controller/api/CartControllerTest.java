@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import com.cafe24.shoppingmall.service.CartService;
 import com.cafe24.shoppingmall.vo.CartVo;
-import com.cafe24.shoppingmall.vo.StockVo;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -23,11 +22,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,8 +69,8 @@ public class CartControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(cartVo)));
 
-//        resultActions.andExpect(status().isOk()).andDo(print()).
-//                andExpect(jsonPath("$.result", is("success")));
+        resultActions.andExpect(status().isOk()).andDo(print()).
+                andExpect(jsonPath("$.result", is("success")));
 //          cartVo = new CartVo();
 //        cartVo.setId("asd4");
 //        cartVo.setQuantity(2);

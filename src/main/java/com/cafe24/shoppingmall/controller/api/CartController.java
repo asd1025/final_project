@@ -3,7 +3,6 @@ package com.cafe24.shoppingmall.controller.api;
 import java.util.ArrayList;
 
 import com.cafe24.shoppingmall.vo.CartVo;
-import com.cafe24.shoppingmall.vo.UserVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class CartController {
 	 */
 	@ApiOperation(value="장바구니 보기")
 	@ApiImplicitParam(name="id",value="회원 아이디",required = true, dataType = "string", paramType = "path", defaultValue = "")
-	@RequestMapping(value="/{id}",method=RequestMethod.GET)
+	@GetMapping(value="/{id}")
 	public ResponseEntity<JSONResult> showCart(@PathVariable(value="id") String id) {
 		ArrayList<CartVo> list= (ArrayList<CartVo>) cartService.getList(id);
 		if(list.size()!=0) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));

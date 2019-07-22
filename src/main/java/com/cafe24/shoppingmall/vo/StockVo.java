@@ -11,7 +11,7 @@ public class StockVo {
     private String optionNums; // 최종 옵션을 번호로 표현하여, 스트링으로 가지고 있다. ex) 3/2
     private String instockDate;
     private int amount;
-    private boolean inNonStock; // 비재고 여부
+    private boolean isNonStock; // 비재고 여부
     private double optionPrice; // 추가금액
     private String productCode; // 상품코드
 
@@ -60,12 +60,12 @@ public class StockVo {
         this.amount = amount;
     }
 
-    public boolean isInNonStock() {
-        return inNonStock;
+    public boolean getIsNonStock() {
+        return isNonStock;
     }
 
-    public void setInNonStock(boolean inNonStock) {
-        this.inNonStock = inNonStock;
+    public void setIsNonStock(boolean isNonStock) {
+        this.isNonStock = isNonStock;
     }
 
     public double getOptionPrice() {
@@ -122,9 +122,9 @@ public class StockVo {
                 "stockNo=" + stockNo +
                 ", finalOption='" + finalOption + '\'' +
                 ", optionNums='" + optionNums + '\'' +
-                ", instockDate='" + instockDate + '\'' +
+                ", isNonStock='" + isNonStock + '\'' +
                 ", amount=" + amount +
-                ", inNonStock=" + inNonStock +
+                ", isNonStock=" + isNonStock +
                 ", optionPrice=" + optionPrice +
                 ", productCode='" + productCode + '\'' +
                 ", productNo=" + productNo +

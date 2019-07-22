@@ -4,10 +4,12 @@
 	<typeAliases>
 		<typeAlias alias="uservo" type="com.cafe24.shoppingmall.vo.UserVo" />
 		<typeAlias alias="cartvo" type="com.cafe24.shoppingmall.vo.CartVo" />
+		<typeAlias alias="productvo" type="com.cafe24.shoppingmall.vo.ProductVo" />
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="com/cafe24/config/app/mybatis/mappers/user.xml" />
 		<mapper resource="com/cafe24/config/app/mybatis/mappers/cart.xml" />
+		<mapper resource="com/cafe24/config/app/mybatis/mappers/product.xml" />
 	</mappers>
 </configuration>
