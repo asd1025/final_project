@@ -1,6 +1,7 @@
 package com.cafe24.shoppingmall.vo;
 
 public class OptionDetailVo {
+
     private int no;
     private String detailName;
     private int optionNo;

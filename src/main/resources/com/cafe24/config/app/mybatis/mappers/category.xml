@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="category">
+
+    <insert id="insert" parameterType="categoryvo"  >
+        <![CDATA[
+			insert into category (name,parent_category,category_code) values (#{name},#{parentCategory},#{categoryCode})
+		]]>
+    </insert>
+
+
+   <select id="getList"  parameterType="String"  resultType="categoryvo">
+		<![CDATA[
+			select category_no as categoryNo, name, parent_category as parentCategory, category_code as categoryCode from category
+		]]>
+	</select>
+
+	<select id="getCategory"  parameterType="int"  resultType="categoryvo">
+		<![CDATA[
+            select category_no as categoryNo, name, parent_category as parentCategory, category_code
+            as categoryCode from category where category_no=#{value}
+		]]>
+	</select>
+ 	<delete id="deleteCategory"  parameterType="int">
+		<![CDATA[ delete from category where category_no=#{value} ]]>
+	</delete>
+
+	<update id="updateDefault" parameterType="map">
+
+		<![CDATA[ update category set parent_category = #{default} where parent_category=#{parent_category} ]]>
+	</update>
+
+
+	<update id="update" parameterType="categoryvo">
+		<![CDATA[ update category set name=#{name}, parent_category=#{parentCategory}  where  category_no=#{categoryNo}]]>
+	</update>
+
+</mapper>

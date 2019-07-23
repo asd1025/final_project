@@ -35,6 +35,7 @@ public class ProductService {
         return  productDao.get(no);
     }
 
+     // 수정이 필요한 부분,,,
     public boolean deleteProduct(int no) {
         return 0!=productDao.delete(no);
     }

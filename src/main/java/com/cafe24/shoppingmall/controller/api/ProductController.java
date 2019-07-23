@@ -76,8 +76,8 @@ public class ProductController {
      * 해당 번호의 상품을 수정한다
      */
     @ApiOperation(value="해당 번호의 상품 수정")
-    @ApiImplicitParam(name="productVo",value="productVo",required = true, dataType = "productVo", paramType = "path", defaultValue = "")
-    @PutMapping(value="/{no}")
+    @ApiImplicitParam(name="productVo",value="productVo",required = true, dataType = "productVo", paramType = "query", defaultValue = "")
+    @PutMapping(value="")
     public ResponseEntity<JSONResult> updateProduct(@RequestBody ProductVo productVo) {
             if(productService.updateProduct(productVo)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));

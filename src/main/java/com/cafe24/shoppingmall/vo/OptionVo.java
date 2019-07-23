@@ -5,6 +5,10 @@ public class OptionVo {
     private  String optionName;
     private int productNo;
 
+    private int no;
+    private String detailName;
+    private String detailCode;
+
     public int getOptionNo() {
         return optionNo;
     }
@@ -29,12 +33,39 @@ public class OptionVo {
         this.productNo = productNo;
     }
 
+    public int getNo() {
+        return no;
+    }
+
+    public void setNo(int no) {
+        this.no = no;
+    }
+
+    public String getDetailName() {
+        return detailName;
+    }
+
+    public void setDetailName(String detailName) {
+        this.detailName = detailName;
+    }
+
+    public String getDetailCode() {
+        return detailCode;
+    }
+
+    public void setDetailCode(String detailCode) {
+        this.detailCode = detailCode;
+    }
+
     @Override
     public String toString() {
         return "OptionVo{" +
                 "optionNo=" + optionNo +
                 ", optionName='" + optionName + '\'' +
                 ", productNo=" + productNo +
+                ", no=" + no +
+                ", detailName='" + detailName + '\'' +
+                ", detailCode='" + detailCode + '\'' +
                 '}';
     }
 }

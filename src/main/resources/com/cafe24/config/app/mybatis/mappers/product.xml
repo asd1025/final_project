@@ -30,7 +30,10 @@
 	</delete>
 
 	<update id="update" parameterType="productvo">
-		<![CDATA[ update product set quantity = #{quantity} where product_no=#{productNo} ]]>
+		<![CDATA[ update product set name=#{name} , content=#{content},updatedate=now(),
+		material=#{material}, price=#{price}, country=#{country},is_display=#{isDisplay} ,
+		is_sale=#{isSale}, wholesale_price=#{wholesalePrice}, actual_price=#{actualPrice},
+		category_no=#{categoryNo}  where product_no=#{productNo} ]]>
 	</update>
 
 
