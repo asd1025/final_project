@@ -27,6 +27,7 @@ public class CategoryService {
         return categoryDao.getCategory(no);
     }
 
+
     @Transactional
     public boolean deleteCategoryByNo(int no) {
         return (categoryDao.deleteCategory(no)!=0)&&(categoryDao.updateCategroy(no)!=0);

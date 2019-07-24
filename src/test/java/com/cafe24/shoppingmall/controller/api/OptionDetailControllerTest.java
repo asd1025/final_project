@@ -2,7 +2,9 @@ package com.cafe24.shoppingmall.controller.api;
 
 import com.cafe24.shoppingmall.config.AppConfig;
 import com.cafe24.shoppingmall.config.TestWebConfig;
+import com.cafe24.shoppingmall.service.OptionDetailService;
 import com.cafe24.shoppingmall.service.OptionService;
+import com.cafe24.shoppingmall.vo.OptionDetailVo;
 import com.cafe24.shoppingmall.vo.OptionVo;
 import com.google.gson.Gson;
 import org.junit.Before;
@@ -33,68 +35,72 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class, TestWebConfig.class})
 @WebAppConfiguration
-public class OptionControllerTest {
+public class OptionDetailControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     @Autowired
-    private OptionService optionService;
+    private OptionDetailService optionDetailService;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    @Ignore
+//    @Ignore
     @Test
-    public void testDIOptionService() {
-        assertNotNull(optionService);
+    public void testDIOptionDetailService() {
+        assertNotNull(optionDetailService);
     }
 
 //    @Ignore
     @Test
-    public void testAddOption() throws Exception {
+    public void testAddOptionDetail() throws Exception {
 
         // 200
-        List<OptionVo> list = new ArrayList<>();
-        OptionVo op1=new OptionVo();
-        op1.setOptionName("디자인");
-        op1.setProductNo(3);
-        OptionVo op2=new OptionVo();
-        op2.setOptionName("크기");
-        op2.setProductNo(3);
+        List<OptionDetailVo> list = new ArrayList<>();
+        OptionDetailVo op1=new OptionDetailVo();
+        op1.setOptionNo(1);
+        op1.setDetailName("검정");
+
+        OptionDetailVo op2=new OptionDetailVo();
+        op2.setDetailName("XL");
+        op2.setOptionNo(3);
+
         list.add(op1);
         list.add(op2);
 
         ResultActions resultActions = mockMvc
-                .perform(post("/api/option")
+                .perform(post("/api/detail")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(list)));
 
         resultActions.andExpect(status().isOk()).andDo(print()).
                 andExpect(jsonPath("$.result", is("success")));
 
-        //400
-//        List<OptionVo> list = new ArrayList<>();
-//
-//        ResultActions        resultActions = mockMvc
-//                .perform(post("/api/option")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(new Gson().toJson(list)));
-//
-//        resultActions.andExpect(status().isBadRequest()).andDo(print()).
-//                andExpect(jsonPath("$.result", is("fail")));
+        //400 null일 경우
+        list = new ArrayList<>();
+
+          resultActions = mockMvc
+                .perform(post("/api/detail")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(list)));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print()).
+                andExpect(jsonPath("$.result", is("fail")));
+
+
 
     }
-
+//
 //    @Ignore
     @Test
-    public void testGetAllOption() throws Exception {
+    public void testGetAllOptionDetail() throws Exception {
         // 200
         ResultActions resultActions = mockMvc
-                .perform(get("/api/option").contentType(MediaType.APPLICATION_JSON));
+                .perform(get("/api/detail").contentType(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isOk()).andDo(print())
                 .andExpect(jsonPath("$.result", is("success")));
@@ -109,17 +115,35 @@ public class OptionControllerTest {
 
     }
     @Test
-    public void testGetOptionByNo() throws Exception {
+    public void testGetAllOptionDetailByOptionNo() throws Exception {
         // 200
         ResultActions resultActions = mockMvc
-                .perform(get("/api/option/{no}",3).contentType(MediaType.APPLICATION_JSON));
+                .perform(get("/api/detail/option/{no}",3).contentType(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isOk()).andDo(print())
                 .andExpect(jsonPath("$.result", is("success")));
 
         // 400
          resultActions = mockMvc
-                .perform(get("/api/option/{no}",100).contentType(MediaType.APPLICATION_JSON));
+                .perform(get("/api/detail/option/{no}",100).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+
+    }
+    @Test
+    public void testGetOptionDetailByNo() throws Exception {
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(get("/api/detail/{no}",3).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400
+         resultActions = mockMvc
+                .perform(get("/api/detail/{no}",100).contentType(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isBadRequest()).andDo(print())
                 .andExpect(jsonPath("$.result", is("fail")));
@@ -127,57 +151,39 @@ public class OptionControllerTest {
 
     }
 
+
+    //    @Ignore
+        @Test
+        public void testDeleteOptionDetailByNo() throws Exception {
+
+            // 200
+            ResultActions resultActions = mockMvc
+                    .perform(delete("/api/detail/{no}",5).contentType(MediaType.APPLICATION_JSON));
+
+            resultActions.andExpect(status().isOk()).andDo(print())
+                    .andExpect(jsonPath("$.result", is("success")));
+
+            // 400
+         resultActions = mockMvc
+                    .perform(delete("/api/detail/{no}",100).contentType(MediaType.APPLICATION_JSON));
+
+          resultActions.andExpect(status().isBadRequest()).andDo(print())
+                    .andExpect(jsonPath("$.result", is("fail")));
+
+        }
     @Test
-    public void testGetOptionByProductNo() throws Exception {
+    public void testDeleteDetailOptionByOptionNo() throws Exception {
+
         // 200
         ResultActions resultActions = mockMvc
-                .perform(get("/api/option/product/{no}",1).contentType(MediaType.APPLICATION_JSON));
+                .perform(delete("/api/detail/option/{no}",3).contentType(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isOk()).andDo(print())
                 .andExpect(jsonPath("$.result", is("success")));
 
         // 400
         resultActions = mockMvc
-                .perform(get("/api/option/product/{no}",100).contentType(MediaType.APPLICATION_JSON));
-
-        resultActions.andExpect(status().isBadRequest()).andDo(print())
-                .andExpect(jsonPath("$.result", is("fail")));
-
-
-    }
-
-//    @Ignore
-    @Test
-    public void testDeleteOptionByNo() throws Exception {
-
-        // 200
-        ResultActions resultActions = mockMvc
-                .perform(delete("/api/option/{no}",4).contentType(MediaType.APPLICATION_JSON));
-
-        resultActions.andExpect(status().isOk()).andDo(print())
-                .andExpect(jsonPath("$.result", is("success")));
-
-        // 400
-     resultActions = mockMvc
-                .perform(delete("/api/option/{no}",100).contentType(MediaType.APPLICATION_JSON));
-
-      resultActions.andExpect(status().isBadRequest()).andDo(print())
-                .andExpect(jsonPath("$.result", is("fail")));
-
-    }
-    @Test
-    public void testDeleteOptionByProductNo() throws Exception {
-
-        // 200
-        ResultActions resultActions = mockMvc
-                .perform(delete("/api/option/product/{no}",3).contentType(MediaType.APPLICATION_JSON));
-
-        resultActions.andExpect(status().isOk()).andDo(print())
-                .andExpect(jsonPath("$.result", is("success")));
-
-        // 400
-        resultActions = mockMvc
-                .perform(delete("/api/option/product/{no}",100).contentType(MediaType.APPLICATION_JSON));
+                .perform(delete("/api/detail/option/{no}",100).contentType(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isBadRequest()).andDo(print())
                 .andExpect(jsonPath("$.result", is("fail")));
@@ -185,30 +191,30 @@ public class OptionControllerTest {
     }
 
     @Test
-    public void testUpdateCart() throws Exception {
+    public void testUpdateDetailOption() throws Exception {
 
 
         // 200
-        OptionVo optionVo = new OptionVo();
-        optionVo.setOptionName("SIZE");
-        optionVo.setOptionNo(4);
+        OptionDetailVo vo=new OptionDetailVo();
+        vo.setNo(13);
+        vo.setDetailName("회색");
+
 
         ResultActions  resultActions = mockMvc
-                .perform(put("/api/option") .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(optionVo)));
+                .perform(put("/api/detail") .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(vo)));
 
         resultActions.andExpect(status().isOk()).andDo(print())
                 .andExpect(jsonPath("$.result", is("success")));
 
         // 400
-        optionVo = new OptionVo();
-        optionVo.setOptionNo(100);
-         resultActions = mockMvc
-                .perform(put("/api/option").contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(optionVo)));
-
-        resultActions.andExpect(status().isBadRequest()).andDo(print())
-                .andExpect(jsonPath("$.result", is("fail")));
+//        vo=new OptionDetailVo();
+//         resultActions = mockMvc
+//                .perform(put("/api/detail").contentType(MediaType.APPLICATION_JSON)
+//                        .content(new Gson().toJson(vo)));
+//
+//        resultActions.andExpect(status().isBadRequest()).andDo(print())
+//                .andExpect(jsonPath("$.result", is("fail")));
 
 
     }

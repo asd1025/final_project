@@ -7,6 +7,7 @@
 		<typeAlias alias="productvo" type="com.cafe24.shoppingmall.vo.ProductVo" />
 		<typeAlias alias="categoryvo" type="com.cafe24.shoppingmall.vo.CategoryVo" />
 		<typeAlias alias="optionvo" type="com.cafe24.shoppingmall.vo.OptionVo" />
+		<typeAlias alias="optiondetailvo" type="com.cafe24.shoppingmall.vo.OptionDetailVo" />
 	</typeAliases>
 
 	<mappers>
@@ -15,5 +16,6 @@
 		<mapper resource="com/cafe24/config/app/mybatis/mappers/product.xml" />
 		<mapper resource="com/cafe24/config/app/mybatis/mappers/category.xml" />
 		<mapper resource="com/cafe24/config/app/mybatis/mappers/option.xml" />
+		<mapper resource="com/cafe24/config/app/mybatis/mappers/option_detail.xml" />
 	</mappers>
 </configuration>
