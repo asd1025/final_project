@@ -50,7 +50,7 @@ public class UserControllerTest {
         assertNotNull(userService);
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void testCheckId() throws Exception {
         // 200 ok
@@ -72,13 +72,13 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.result", is("fail")));
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void testJoin() throws Exception {
 
         // 200
         UserVo userVo = new UserVo();
-        userVo.setId("asd2");
+        userVo.setId("asd1");
         userVo.setPassword("1234!!!a");
         userVo.setName("김가나");
         userVo.setPhone("010-9999-4444");

@@ -40,14 +40,4 @@ public class OptionDetailDao {
         return sqlSession.update("option_detail.update",optionDetailVo);
     }
 
-//
-//    public int deleteOptionByProductNo(int no) {
-//        return sqlSession.delete("option.deleteOptionByProductNo",no);
-//
-//    }
-//
-//    public int updateOption(OptionVo optionVo) {
-//        return sqlSession.update("option.update",optionVo);
-//
-//    }
 }

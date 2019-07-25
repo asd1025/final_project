@@ -6,6 +6,7 @@ public class CartVo {
     private int quantity; // 상품의 수량
     private int stockNo; //  상품 번호
     private String updateDate;
+    private String nonmemberId;
 
     private String productName;
     private String thumbImg; // 대표사진

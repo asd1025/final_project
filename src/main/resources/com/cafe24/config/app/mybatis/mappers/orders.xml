@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="orders">
+	<resultMap id="ordersResultMap" type="OrdersVo">
+		<id property="sendName" column="send_name" />
+		<result property="sendZipcode" column="send_zipcode"/>
+		<result property="sendAddress" column="send_address"/>
+		<result property="sendPhone" column="send_phone"/>
+		<result property="sendEmail" column="send_email"/>
+		<result property="recipientName" column="recipient_name"/>
+		<result property="recipientZipcode" column="recipient_zipcode"/>
+		<result property="recipientAddress" column="recipient_address"/>
+		<result property="message" column="message"/>
+		<result property="orderPassword" column="order_password"/>
+		<result property="id" column="id"/>
+		<result property="totalPurchasePrice" column="total_purchase_price"/>
+		<result property="totalActualPayment" column="total_actual_payment"/>
+		<result property="totalShippingStatus" column="total_shipping_status"/>
+		<result property="orderProcessStatus" column="order_process_status"/>
+		<result property="code" column="code"/>
+	</resultMap>
+    <insert id="insert" parameterType="ordersvo"  >
+		<selectKey keyProperty="code" resultType="string" order="BEFORE">
+			<![CDATA[
+		 			select CONCAT( date_format( Date(now()),'%Y%m%d' ),'-',
+				(SELECT LPAD( (select count(*)+1 from orders where orders_date>= Date(now())
+				 and orders_date <= DATE (now())+1) ,8,'0'))) ]]>
+		</selectKey>
+		insert into orders (send_name, send_zipcode, send_address, send_phone, send_email, recipient_name
+		, recipient_zipcode, recipient_address, message, order_password, id, total_purchase_price, total_actual_payment, order_process_status
+		,code)
+		values (#{sendName},#{sendZipcode},#{sendAddress},#{sendPhone},#{sendEmail},#{recipientName},
+		#{recipientZipcode},#{recipientAddress},#{message},#{orderPassword},#{id},#{totalPurchasePrice},#{totalActualPayment}
+		,#{orderProcessStatus},#{code});
+
+    </insert>
+
+<!--	<update id="update" parameterType="paymentvo">-->
+<!--		 update payment set payment_method=#{paymentMethod}, price=#{price},payment_status=#{paymentStatus}-->
+<!--			<if test="paymentStatus == '입금완료'">,payment_date=now()</if>-->
+<!--   		where  payment_no=#{paymentNo}-->
+<!--	</update>-->
+
+   <select id="getList"    resultMap="ordersResultMap">
+		<![CDATA[
+			select *   from orders;
+		]]>
+	</select>
+
+<!--	<select id="getPaymentByPaymentNo"  parameterType="int"  resultType="paymentvo">-->
+<!--		<![CDATA[-->
+<!--		select payment_no as paymentNo, payment_method as paymentMethod, payment_date as paymentDate-->
+<!--			, price, payment_status as paymentStatus    from payment where payment_no=#{paymentNo}-->
+<!--		]]>-->
+<!--	</select>-->
+
+<!--	<select id="getPaymentByNo"  parameterType="int"  resultType="paymentvo">-->
+<!--		<![CDATA[-->
+<!--           select payment_no as paymentNo, payment_method as paymentMethod, payment_date as paymentDate-->
+<!--			, price, payment_status as paymentStatus    from payment where no=#{no}-->
+<!--		]]>-->
+<!--	</select>-->
+
+<!-- 	<delete id="deleteOrdersByDate"  >-->
+<!--		<![CDATA[ delete from orders where ]]>-->
+<!--	</delete>-->
+
+</mapper>

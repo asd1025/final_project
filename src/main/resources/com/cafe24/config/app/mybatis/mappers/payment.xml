@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="payment">
+
+    <insert id="insert" parameterType="paymentvo"  >
+        <![CDATA[
+			insert into payment (payment_method,payment_date, price, payment_status) values (#{paymentMethod},null,#{price},#{paymentStatus})
+		]]>
+    </insert>
+
+	<update id="update" parameterType="paymentvo">
+		 update payment set payment_method=#{paymentMethod}, price=#{price},payment_status=#{paymentStatus}
+			<if test="paymentStatus == '입금완료'">,payment_date=now()</if>
+   		where  payment_no=#{paymentNo}
+	</update>
+
+   <select id="getList"    resultType="paymentvo">
+		<![CDATA[
+			select payment_no as paymentNo, payment_method as paymentMethod, payment_date as paymentDate, price, payment_status as paymentStatus    from payment
+		]]>
+	</select>
+
+	<select id="getPaymentByPaymentNo"  parameterType="int"  resultType="paymentvo">
+		<![CDATA[
+		select payment_no as paymentNo, payment_method as paymentMethod, payment_date as paymentDate
+			, price, payment_status as paymentStatus    from payment where payment_no=#{paymentNo}
+		]]>
+	</select>
+
+	<select id="getPaymentByNo"  parameterType="int"  resultType="paymentvo">
+		<![CDATA[
+           select payment_no as paymentNo, payment_method as paymentMethod, payment_date as paymentDate
+			, price, payment_status as paymentStatus    from payment where no=#{no}
+		]]>
+	</select>
+
+ 	<delete id="deletePayment"  parameterType="int">
+		<![CDATA[ delete from payment where payment_no=#{value} ]]>
+	</delete>
+
+</mapper>
