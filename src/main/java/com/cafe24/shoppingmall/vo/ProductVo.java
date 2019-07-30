@@ -1,5 +1,7 @@
 package com.cafe24.shoppingmall.vo;
 
+import java.util.List;
+
 public class ProductVo {
     private int productNo;
     private String name;
@@ -16,6 +18,33 @@ public class ProductVo {
     private double actualPrice;
     private int categoryNo;
     private String productCode;
+    private List<PhotoVo> photos;
+    private List<StockVo> stocks;
+    private List<OptionVo> options;
+
+    public List<PhotoVo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<PhotoVo> photos) {
+        this.photos = photos;
+    }
+
+    public List<StockVo> getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(List<StockVo> stocks) {
+        this.stocks = stocks;
+    }
+
+    public List<OptionVo> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<OptionVo> options) {
+        this.options = options;
+    }
 
     public String getProductCode() {
         return productCode;
@@ -155,6 +184,9 @@ public class ProductVo {
                 ", actualPrice=" + actualPrice +
                 ", categoryNo=" + categoryNo +
                 ", productCode='" + productCode + '\'' +
+                ", photos=" + photos +
+                ", stocks=" + stocks +
+                ", options=" + options +
                 '}';
     }
 }

@@ -21,8 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -219,5 +218,38 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.result", is("fail")));
     }
 
+    @Test
+    public void testUpdate() throws Exception {
 
+        // 200 로그인 성공
+        UserVo userVo = new UserVo();
+        userVo.setId("asd1");
+        userVo.setPassword("1234!!!a");
+        userVo.setPhone("010-1234-1234");
+        userVo.setEmail("asd@gmail.com");
+        userVo.setBirth("920101");
+        userVo.setGender("FEMALE");
+        userVo.setName("김나나");
+
+        ResultActions resultActions = mockMvc
+                .perform(put("/api/user/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(userVo)));
+
+        resultActions.andExpect(status().isOk()).andDo(print()).
+                andExpect(jsonPath("$.result", is("success")));
+
+        // 400 회원 정보 없음
+        userVo = new UserVo();
+        userVo.setId("user2");
+        userVo.setPassword("asd2134@");
+
+        resultActions = mockMvc
+                .perform(put("/api/user/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(userVo)));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+    }
 }

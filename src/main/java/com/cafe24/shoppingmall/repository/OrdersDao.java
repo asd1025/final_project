@@ -5,6 +5,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class OrdersDao {
     @Autowired
@@ -17,13 +21,17 @@ public class OrdersDao {
 //        return sqlSession.insert("option_detail.insert",optionDetailVo);
 //    }
 //
-//    public List<OptionDetailVo> getList() {
-//        return sqlSession.selectList("option_detail.getList");
-//    }
-//
-//    public List<OptionDetailVo> getOptionDetailByOptionNo(int no) {
-//        return sqlSession.selectList("option_detail.getOptionDetailByOptionNo",no);
-//    }
+    public List<OrdersVo> getList() {
+        return sqlSession.selectList("orders.getList");
+    }
+
+    public List<OrdersVo> getAllOrdersById(String id) {
+        return sqlSession.selectList("orders.getAllOrdersById",id);
+    }
+
+    public OrdersVo getOrdersByNonmember(OrdersVo vo) {
+        return sqlSession.selectOne("orders.getOrdersByNonmember",vo);
+    }
 //
 //    public OptionDetailVo getOptionDetailByNo(int no) {
 //        return sqlSession.selectOne("option_detail.getOptionDetailByNo",no);
@@ -37,7 +45,11 @@ public class OrdersDao {
 //        return sqlSession.delete("option_detail.deleteByOptionNo",no);
 //    }
 //
-//    public int update(OptionDetailVo optionDetailVo) {
-//        return sqlSession.update("option_detail.update",optionDetailVo);
-//    }
+    public int update(OrdersVo vo) {
+        return sqlSession.update("orders.update",vo);
+    }
+
+    public int deleteOrderByCode(String code) {
+        return sqlSession.update("orders.deleteOrderByCode",code);
+    }
 }

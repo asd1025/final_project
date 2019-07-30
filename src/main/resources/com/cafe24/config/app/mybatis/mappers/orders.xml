@@ -35,11 +35,10 @@
 
     </insert>
 
-<!--	<update id="update" parameterType="paymentvo">-->
-<!--		 update payment set payment_method=#{paymentMethod}, price=#{price},payment_status=#{paymentStatus}-->
-<!--			<if test="paymentStatus == '입금완료'">,payment_date=now()</if>-->
-<!--   		where  payment_no=#{paymentNo}-->
-<!--	</update>-->
+	<update id="update" parameterType="ordersvo">
+		 update orders set order_shipping_status=#{orderShippingStatus}
+		 , order_process_status=#{orderProcessStatus} where code=#{code}
+	</update>
 
    <select id="getList"    resultMap="ordersResultMap">
 		<![CDATA[
@@ -47,22 +46,21 @@
 		]]>
 	</select>
 
-<!--	<select id="getPaymentByPaymentNo"  parameterType="int"  resultType="paymentvo">-->
-<!--		<![CDATA[-->
-<!--		select payment_no as paymentNo, payment_method as paymentMethod, payment_date as paymentDate-->
-<!--			, price, payment_status as paymentStatus    from payment where payment_no=#{paymentNo}-->
-<!--		]]>-->
-<!--	</select>-->
+	<select id="getAllOrdersById"  parameterType="string"  resultMap="ordersResultMap">
+		<![CDATA[
+		 select * from orders where id=#{value}
+		]]>
+	</select>
 
-<!--	<select id="getPaymentByNo"  parameterType="int"  resultType="paymentvo">-->
-<!--		<![CDATA[-->
-<!--           select payment_no as paymentNo, payment_method as paymentMethod, payment_date as paymentDate-->
-<!--			, price, payment_status as paymentStatus    from payment where no=#{no}-->
-<!--		]]>-->
-<!--	</select>-->
+	<select id="getOrdersByNonmember"  parameterType="ordersvo"  resultMap="ordersResultMap">
+		<![CDATA[
+		 select * from orders where code=#{code} and order_password=#{orderPassword}
+		]]>
+	</select>
 
-<!-- 	<delete id="deleteOrdersByDate"  >-->
-<!--		<![CDATA[ delete from orders where ]]>-->
-<!--	</delete>-->
+
+ 	<delete id="deleteOrderByCode"  >
+		<![CDATA[ delete from orders where code=#{code} ]]>
+	</delete>
 
 </mapper>

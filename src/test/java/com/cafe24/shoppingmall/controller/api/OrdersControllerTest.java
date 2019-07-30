@@ -108,54 +108,90 @@ public class OrdersControllerTest {
                     andExpect(jsonPath("$.result", is("success")));
 //
 //
-//            // 400 비회원 주문시 비밀번호 invalid
-//            vo = new OrdersVo();
-//            vo.setSendName("김우빈");
-//            vo.setSendZipcode("06111");
-//            vo.setSendAddress("서울시 강남구 선릉로 43길 33");
-//            vo.setSendPhone("010-1111-3333");
-//            vo.setSendEmail("frfr@naver.com");
-//            vo.setRecipientName("이종석");
-//            vo.setRecipientZipcode("434333");
-//            vo.setRecipientAddress("서울시 강남구 언주로 44길 11");
-//            vo.setMessage("부재시 문앞이요!!!");
-//            vo.setTotalPurchasePrice(13000);
-//            vo.setTotalActualPayment(12000);
-//            vo.setCode(CodeMaker.makeCode());
-//
-//            vo.setOrderPassword("asd");
-//
-//                    resultActions = mockMvc
-//                            .perform(post("/api/orders")
-//                                    .contentType(MediaType.APPLICATION_JSON)
-//                                    .content(new Gson().toJson(vo)));
-//
-//                    resultActions.andExpect(status().isBadRequest()).andDo(print()).
-//                            andExpect(jsonPath("$.result", is("fail")));
+            // 400 비회원 주문시 비밀번호 invalid
+            vo = new OrdersVo();
+            vo.setSendName("김우빈");
+            vo.setSendZipcode("06111");
+            vo.setSendAddress("서울시 강남구 선릉로 43길 33");
+            vo.setSendPhone("010-1111-3333");
+            vo.setSendEmail("frfr@naver.com");
+            vo.setRecipientName("이종석");
+            vo.setRecipientZipcode("434333");
+            vo.setRecipientAddress("서울시 강남구 언주로 44길 11");
+            vo.setMessage("부재시 문앞이요!!!");
+            vo.setTotalPurchasePrice(13000);
+            vo.setTotalActualPayment(12000);
+
+            vo.setOrderPassword("asd");
+
+                    resultActions = mockMvc
+                            .perform(post("/api/orders")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(new Gson().toJson(vo)));
+
+                    resultActions.andExpect(status().isBadRequest()).andDo(print()).
+                            andExpect(jsonPath("$.result", is("fail")));
 
 
         }
-//
-////    @Ignore
-//        @Test
-//        public void testShowCart() throws Exception {
-//
-//            // 200
-//            ResultActions resultActions = mockMvc
-//                    .perform(get("/api/cart/{id}","asd4").contentType(MediaType.APPLICATION_JSON));
-//
-//            resultActions.andExpect(status().isOk()).andDo(print())
-//                    .andExpect(jsonPath("$.result", is("success")));
-//
-//            // 400
-//            resultActions = mockMvc
-//                    .perform(get("/api/cart/{id}","user2").contentType(MediaType.APPLICATION_JSON));
-//
-//            resultActions.andExpect(status().isBadRequest()).andDo(print())
-//                    .andExpect(jsonPath("$.result", is("fail")));
-//
-//
-//        }
+
+//    @Ignore
+        @Test
+        public void testGetAllOrdersById() throws Exception {
+
+            // 200
+            ResultActions resultActions = mockMvc
+                    .perform(get("/api/orders/{id}","asd1").contentType(MediaType.APPLICATION_JSON));
+
+            resultActions.andExpect(status().isOk()).andDo(print())
+                    .andExpect(jsonPath("$.result", is("success")));
+
+//             400 존재하지 않는 회원
+            resultActions = mockMvc
+                    .perform(get("/api/orders/{id}","user2").contentType(MediaType.APPLICATION_JSON));
+
+            resultActions.andExpect(status().isBadRequest()).andDo(print())
+                    .andExpect(jsonPath("$.result", is("fail")));
+
+
+        }
+        @Test
+        public void testGetOrdersByNonmember() throws Exception {
+
+            // 200
+            OrdersVo vo=new OrdersVo();
+            vo.setCode("20190725-00000002");
+            vo.setOrderPassword("asdasd");
+            ResultActions resultActions = mockMvc
+                    .perform(post("/api/orders/nonmember").contentType(MediaType.APPLICATION_JSON)
+                    .content(new Gson().toJson(vo)));
+
+            resultActions.andExpect(status().isOk()).andDo(print())
+                    .andExpect(jsonPath("$.result", is("success")));
+
+//           // 400 일치하지 않는 비밀번호
+            vo=new OrdersVo();
+            vo.setCode("20190725-00000002");
+            vo.setOrderPassword("aaaaaaa");
+            resultActions = mockMvc
+                    .perform(post("/api/orders/nonmember").contentType(MediaType.APPLICATION_JSON)
+                            .content(new Gson().toJson(vo)));
+
+            resultActions.andExpect(status().isBadRequest()).andDo(print())
+                    .andExpect(jsonPath("$.result", is("fail")));
+
+            // 400 존재하지 않은 주문번호
+            vo=new OrdersVo();
+            vo.setCode("20190725-00000222");
+            vo.setOrderPassword("aaaaaaa");
+            resultActions = mockMvc
+                    .perform(post("/api/orders/nonmember").contentType(MediaType.APPLICATION_JSON)
+                            .content(new Gson().toJson(vo)));
+
+            resultActions.andExpect(status().isBadRequest()).andDo(print())
+                    .andExpect(jsonPath("$.result", is("fail")));
+
+        }
 //
 //        @Ignore
 //        @Test

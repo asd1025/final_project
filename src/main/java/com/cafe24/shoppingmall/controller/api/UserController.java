@@ -103,12 +103,22 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
 
 	}
-	
-	
-	
-	
-		
-	
-	
-	
+
+	/**
+	 * 회원정보 수정
+	 *
+	 **/
+	@ApiOperation(value="회원정보 수정")
+	@PutMapping(value="/update")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="userVo",value="회원",required = true, dataType = "userVo", paramType = "query", defaultValue = "")
+	})
+	public ResponseEntity<JSONResult> update(@RequestBody UserVo userVo) {
+		boolean isAble = userService.update(userVo);
+		if(isAble) {
+			return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(userVo));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
+
+	}
 }

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -51,20 +52,37 @@ public class OrdersController {
 		else return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(ordersVo));
 	}
 
-//
-//	/**
-//	 * 회원 아이디의 장바구니 상품들을 다 보여준다.
-//	 */
-//	@ApiOperation(value="장바구니 보기")
-//	@ApiImplicitParam(name="id",value="회원 아이디",required = true, dataType = "string", paramType = "path", defaultValue = "")
-//	@GetMapping(value="/{id}")
-//	public ResponseEntity<JSONResult> showCart(@PathVariable(value="id") String id) {
-//		ArrayList<CartVo> list= (ArrayList<CartVo>) cartService.getList(id);
-//		if(list.size()!=0) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
-//		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
-//	}
-//
-//
+	/***
+ 	 *
+ 	 *  회원의 주문 리스트 보기
+ 	 */
+	@ApiOperation(value="회원의 주문 리스트 보기")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "id", value = "회원 아이디", required = true, dataType = "string", paramType = "path", defaultValue = ""),
+	})
+	@GetMapping(value="/{id}")
+	public ResponseEntity<JSONResult> getAllOrdersById(@PathVariable String id) {
+		ArrayList<OrdersVo> list= (ArrayList<OrdersVo>)  ordersService.getAllOrdersById(id);
+		if(list.size()!=0) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
+		else  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
+	}
+	/***
+	 *
+	 *  비회원의 주문 리스트 보기
+	 */
+	@ApiOperation(value="비회원의 주문 리스트 보기")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "ordersVo", value = "주문 객체", required = true, dataType = "OrdersVo", paramType = "query", defaultValue = ""),
+	})
+	@PostMapping(value="/nonmember")
+	public ResponseEntity<JSONResult> getOrdersByNonmember(@RequestBody OrdersVo ordersVo) {
+		OrdersVo vo=  ordersService.getOrdersByNonmember(ordersVo);
+		if(vo!=null) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(vo));
+		else  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
+	}
+
+
+
 //	/***
 //	 *
 //	 *  해당 상품을 삭제한다

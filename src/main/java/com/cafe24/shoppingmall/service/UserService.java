@@ -33,6 +33,11 @@ public class UserService {
 	public UserVo login(UserVo userVo) {
 		return userDao.login(userVo);
 	}
-	
 
+	/***
+	 *  회원정보 수정
+	 */
+    public boolean update(UserVo userVo) {
+    	return 0!=userDao.update(userVo);
+    }
 }

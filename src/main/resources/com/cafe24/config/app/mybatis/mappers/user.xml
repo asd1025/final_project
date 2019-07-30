@@ -32,30 +32,19 @@
 		]]>
 	</select>
 
-    <!--
-    <select id="getByEmailAndPassword" resultType="uservo" parameterType='map'>
-		<![CDATA[
-		select no, name
-		  from user
-		 where email=#{email }
-		   and password=#{password }
-		]]>
-	</select>
-
     <update id="update" parameterType="uservo">
         <![CDATA[
-		update user
-		   set name = #{name },
+		update member set
+		     phone=hex(AES_ENCRYPT(#{phone},sha1(#{phone})))
+                ,email=hex(AES_ENCRYPT(#{email},sha1(#{email}))),refundaccount= coalesce (#{refundAccount},"")
 		]]>
         <if test="password != ''">
             <![CDATA[
-			password=#{password },
+			,password=sha1(#{password})
 			]]>
         </if>
         <![CDATA[
-		       gender = #{gender }
-
-		 where no = #{no }
+		 where id=#{id} and password=sha1(#{password})
 		]]>
-    </update>-->
+    </update>
 </mapper>
