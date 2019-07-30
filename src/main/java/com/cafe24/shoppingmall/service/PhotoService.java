@@ -6,6 +6,7 @@ import com.cafe24.shoppingmall.vo.OptionDetailVo;
 import com.cafe24.shoppingmall.vo.PhotoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,27 +19,26 @@ public class PhotoService {
         return photoDao.insert(photoVo)!=0;
     }
 
-//    public List<OptionDetailVo> getList() {
-//        return optionDetailDao.getList();
-//    }
-//
-//    public List<OptionDetailVo> getOptionDetailByOptionNo(int no) {
-//        return optionDetailDao.getOptionDetailByOptionNo(no);
-//    }
-//
-//    public OptionDetailVo getOptionDetailByNo(int no) {
-//        return optionDetailDao.getOptionDetailByNo(no);
-//    }
-//
-//    public boolean deleteOptionDetailBynNo(int no) {
-//        return 0!=optionDetailDao.deleteByNo(no);
-//    }
-//
-//    public boolean deleteOptionDetailByOptionNo(int no) {
-//        return 0!=optionDetailDao.deleteByOptionNo(no);
-//    }
-//
-//    public boolean updateOptionDetail(OptionDetailVo optionDetailVo) {
-//        return 0!=optionDetailDao.update(optionDetailVo);
-//    }
+    public List<PhotoVo> getListByProductNo(int productNo) {
+        return photoDao.getListByProductNo(productNo);
+    }
+
+
+    /***
+     *  사진을 수정하는 것은
+     *  기존 사진을 삭제하고 다시 넣어준다.
+     * */
+    @Transactional
+    public boolean update(int productNo, List<PhotoVo> photoList) {
+            if(photoList.size()==0) return false;
+          return deletePhotoByProductNo(productNo)&& regPhotos(photoList);
+    }
+
+/**
+ *  상품 사진을 삭제한다
+ * */
+    public boolean deletePhotoByProductNo(int no) {
+        return 0!=photoDao.deletePhotoByProductNo(no);
+    }
+
 }

@@ -4,7 +4,7 @@ public class PhotoVo {
     private int no;
     private String path;
     private boolean isThumb;
-    private int ProductNo;
+    private int productNo;
 
     public int getNo() {
         return no;
@@ -22,20 +22,20 @@ public class PhotoVo {
         this.path = path;
     }
 
-    public boolean isThumb() {
+    public boolean getIsThumb() {
         return isThumb;
     }
 
-    public void setThumb(boolean thumb) {
+    public void setIsThumb(boolean thumb) {
         isThumb = thumb;
     }
 
     public int getProductNo() {
-        return ProductNo;
+        return productNo;
     }
 
     public void setProductNo(int productNo) {
-        ProductNo = productNo;
+        this.productNo = productNo;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class PhotoVo {
                 "no=" + no +
                 ", path='" + path + '\'' +
                 ", isThumb=" + isThumb +
-                ", ProductNo=" + ProductNo +
+                ", productNo=" + productNo +
                 '}';
     }
 }

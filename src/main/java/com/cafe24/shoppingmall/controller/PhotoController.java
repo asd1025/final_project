@@ -4,6 +4,8 @@ import com.cafe24.shoppingmall.dto.JSONResult;
 import com.cafe24.shoppingmall.service.OptionDetailService;
 import com.cafe24.shoppingmall.service.PhotoService;
 import com.cafe24.shoppingmall.vo.OptionDetailVo;
+import com.cafe24.shoppingmall.vo.PhotoVo;
+import com.cafe24.shoppingmall.vo.ProductVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -26,101 +28,66 @@ public class PhotoController {
 
 	/**
 	 *  사진 등록하기
+	 *  리스트로 등록
 	 * */
 
 	@ApiOperation(value="사진 등록")
 	@PostMapping(value="")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name="optionDetailVoList",value="list",required = true, dataType = "list", paramType = "query", defaultValue = "")
+			@ApiImplicitParam(name="photoList",value="list",required = true, dataType = "list", paramType = "query", defaultValue = "")
 	})
-	public ResponseEntity<JSONResult> regOptionDetail(@RequestBody List<OptionDetailVo> optionDetailVo) {
-		if(optionDetailVo.size()!=0){
-			boolean irRegOption = optionDetailService.regOptionDetail(optionDetailVo);
-			if(!irRegOption){
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("옵션 디테일 등록 실패"));
+	public ResponseEntity<JSONResult> regPhotos(@RequestBody List<PhotoVo> photoList) {
+		if(photoList.size()!=0){
+			boolean isAble = photoService.regPhotos(photoList);
+			if(!isAble){
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("사진 등록 실패"));
 			}
-		}else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("옵션 디테일 정보 없음"));
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(optionDetailVo));
+		}else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("등록하는 사진이 없음"));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(photoList));
 	}
 
 
 	/**
-	 * 옵션 디테일들을 다 보여준다.
+	 * 상품 사진들을 불러온다
 	 */
-	@ApiOperation(value="옵션 디테일 전체 보기")
-	@GetMapping(value="")
-	public ResponseEntity<JSONResult> getAllOptionDetail() {
-		ArrayList<OptionDetailVo> list= (ArrayList<OptionDetailVo>) optionDetailService.getList();
+	@ApiOperation(value="상품 사진 전체 보기")
+	@ApiImplicitParam(name="productNo",value="상품 번호",required = true, dataType = "int", paramType = "path", defaultValue = "")
+	@GetMapping(value="/{productNo}")
+	public ResponseEntity<JSONResult> getAllPhotosByProductNo(@PathVariable int productNo) {
+		ArrayList<PhotoVo> list= (ArrayList<PhotoVo>) photoService.getListByProductNo(productNo);
 		if(list.size()!=0) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
 	}
 
+	/***
+	 * 사진 수정
+	 * 수정은 기존 사진을 다 삭제하고, 다시 insert
+	 */
+	@ApiOperation(value="상품 사진 수정")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="productNo",value="상품 번호",required = true, dataType = "int", paramType = "path", defaultValue = ""),
+			@ApiImplicitParam(name="photoList",value="list",required = true, dataType = "list", paramType = "query", defaultValue = "")
+	})
+	@PutMapping(value="/{productNo}")
+	public ResponseEntity<JSONResult> updateOptionDetail(@PathVariable int productNo,@RequestBody List<PhotoVo> photoList) {
+		if(photoService.update(productNo,photoList)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
+	}
+
+
 	/**
-	 * 해당 옵션번호의 옵션 디테일들을 보여준다.
-	 */
-	@ApiOperation(value="해당 옵션의 옵션디테일 보기")
-	@ApiImplicitParam(name="no",value="옵션 번호",required = true, dataType = "int", paramType = "path", defaultValue = "")
-	@GetMapping(value="/option/{no}")
-	public ResponseEntity<JSONResult> getOptionDetailByOptionNo(@PathVariable int no) {
-		ArrayList<OptionDetailVo> list= (ArrayList<OptionDetailVo>) optionDetailService.getOptionDetailByOptionNo(no);
-		if(list.size()!=0)  return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
-		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
-	}
-
-	/**
-	 * 해당 옵션 디테일을 보여준다.
-	 */
-	@ApiOperation(value="옵션 디테일 보기")
-	@ApiImplicitParam(name="no",value="옵션 디테일 번호",required = true, dataType = "int", paramType = "path", defaultValue = "")
-	@GetMapping(value="/{no}")
-	public ResponseEntity<JSONResult> getOptionDetailByNo(@PathVariable int no) {
-		OptionDetailVo vo=   optionDetailService.getOptionDetailByNo(no);
-		if(vo!=null) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(vo));
-		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
-	}
-
 	/***
-	 * 디테일 옵션 번호를 통해
-	 *  디테일 옵션을 삭제한다
+	 * 상품 사진 삭제
 	 */
-	@ApiOperation(value="디테일 옵션 삭제")
+	@ApiOperation(value="상품 사진 삭제")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name="no",value="디테일 옵션 번호",required = true, dataType = "int", paramType = "path", defaultValue = "")
+			@ApiImplicitParam(name="productNo",value="상품 번호",required = true, dataType = "int", paramType = "path", defaultValue = ""),
 	})
-	@DeleteMapping(value="/{no}")
-	public ResponseEntity<JSONResult> deleteOptionDetailBynNo(@PathVariable int no) {
-		if(optionDetailService.deleteOptionDetailBynNo(no)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
+	@DeleteMapping(value="/{productNo}")
+	public ResponseEntity<JSONResult> deletePhotos(@PathVariable int productNo) {
+		if(photoService.deletePhotoByProductNo(productNo)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
 	}
 
-	/***
-	 * 옵션 번호를 통해
-	 *  디테일 옵션들을 삭제한다
-	 */
-	@ApiOperation(value="옵션번호로 디테일 옵션 삭제")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name="no",value="옵션 번호",required = true, dataType = "int", paramType = "path", defaultValue = "")
-	})
-	@DeleteMapping(value="/option/{no}")
-	public ResponseEntity<JSONResult> deleteOptionDetailByOptionNo(@PathVariable int no) {
-		if(optionDetailService.deleteOptionDetailByOptionNo(no)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
-	}
-
-	/***
-	 * 옵션 디테일을 수정한다.
-	 */
-	@ApiOperation(value="옵션 디테일 수정")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "optionDetailVo", value = "optionDetailVo", required = true, dataType = "optionDetailVo", paramType = "query", defaultValue = "")
-	})
-	@PutMapping(value="")
-	public ResponseEntity<JSONResult> updateOptionDetail(@RequestBody OptionDetailVo optionDetailVo) {
-		if(optionDetailService.updateOptionDetail(optionDetailVo)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
-	}
-
-	
-	
 	
 }

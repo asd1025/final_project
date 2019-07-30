@@ -58,8 +58,8 @@ public class CategoryControllerTest {
 
         // 200
         CategoryVo categoryVo = new CategoryVo();
-        categoryVo.setName("벨트");
-        categoryVo.setParentCategory(8);
+        categoryVo.setName("상의");
+//        categoryVo.setParentCategory();
 
         ResultActions resultActions = mockMvc
                 .perform(post("/api/category")
@@ -68,7 +68,18 @@ public class CategoryControllerTest {
 
         resultActions.andExpect(status().isOk()).andDo(print()).
                 andExpect(jsonPath("$.result", is("success")));
+        // 200
+         categoryVo = new CategoryVo();
+        categoryVo.setName("반팔");
+        categoryVo.setParentCategory(1);
 
+         resultActions = mockMvc
+                .perform(post("/api/category")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(categoryVo)));
+
+        resultActions.andExpect(status().isOk()).andDo(print()).
+                andExpect(jsonPath("$.result", is("success")));
     }
 
 //    @Ignore

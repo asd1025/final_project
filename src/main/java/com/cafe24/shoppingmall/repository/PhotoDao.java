@@ -17,16 +17,20 @@ public class PhotoDao {
         return sqlSession.insert("photo.insert",photoVo);
     }
 
+    public List<PhotoVo> getListByProductNo(int productNo) {
+        return sqlSession.selectList("photo.getListByProductNo",productNo);
+    }
+
+    public int deletePhotoByProductNo(int no) {
+        return sqlSession.delete("photo.delete",no);
+    }
+
 //    public List<ProductVo> getList() {
 //        return sqlSession.selectList("product.getList");
 //    }
 //
 //    public ProductVo get(int no) {
 //        return sqlSession.selectOne("product.get",no);
-//    }
-//
-//    public int delete(int no) {
-//        return sqlSession.delete("product.delete",no);
 //    }
 //
 //    public int update(ProductVo productVo) {
