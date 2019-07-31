@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="stock">
+	<resultMap id="stockResultMap" type="StockVo">
+	<id property="stockNo" column="stock_no" />
+	<result property="finalOption" column="final_option"/>
+	<result property="optionNums" column="option_nums"/>
+	<result property="instockDate" column="instock_date"/>
+	<result property="amount" column="amount"/>
+	<result property="isNonStock" column="is_nonstock"/>
+	<result property="purchaseCount" column="purchase_count"/>
+	<result property="productNo" column="product_no"/>
+	<result property="optionPrice" column="option_price"/>
+	<result property="productCode" column="product_code"/>
+	<result property="productName" column="product_name"/>
+	<result property="thumbImg" column="thumb_img"/>
+
+</resultMap>
+    <insert id="insert" parameterType="stockvo"  >
+			insert into stock  (final_option, option_nums,instock_date, amount, is_nonstock, purchase_count, product_no
+			, option_price, product_code, product_name, thumb_img)
+			values
+			<foreach collection="list" item="stock"  close=";"  separator="," >
+            (#{stock.finalOption},#{stock.optionNums}, coalesce (#{stock.instockDate},now())
+			,#{stock.amount},coalesce(#{stock.isNonStock},false),#{stock.purchaseCount},#{stock.productNo},coalesce (#{stock.optionPrice},0)
+			,#{stock.productCode},#{stock.productName},#{stock.thumbImg})
+       		 </foreach>
+    </insert>
+
+<!--   <select id="getList"   resultType="productvo">-->
+<!--		<![CDATA[-->
+<!--        select product_no as productNo, name, content,regdate as regDate, updatedate as updateDate, post_weight as postWeight,-->
+<!--       material,price,country,is_display as isDisplay, is_sale as isSale, wholesale_price as wholesalePrice, actual_price as actualPrice,-->
+<!--       category_no as categoryNo,product_code as productCode from product-->
+<!--		]]>-->
+<!--	</select>-->
+
+<!--    <select id="get"  parameterType="int"  resultType="productvo">-->
+<!--		<![CDATA[-->
+<!--        select product_no as productNo, name, content,regdate as regDate, updatedate as updateDate, post_weight as postWeight,-->
+<!--       material,price,country,is_display as isDisplay, is_sale as isSale, wholesale_price as wholesalePrice, actual_price as actualPrice,-->
+<!--       category_no as categoryNo,product_code as productCode from product where product_no=#{value}-->
+<!--		]]>-->
+<!--	</select>-->
+<!--	<delete id="delete"  parameterType="int">-->
+<!--		<![CDATA[ delete from product where product_no=#{value} ]]>-->
+<!--	</delete>-->
+
+<!--	<update id="update" parameterType="productvo">-->
+<!--		<![CDATA[ update product set name=#{name} , content=#{content},updatedate=now(),-->
+<!--		material=#{material}, price=#{price}, country=#{country},is_display=#{isDisplay} ,-->
+<!--		is_sale=#{isSale}, wholesale_price=#{wholesalePrice}, actual_price=#{actualPrice},-->
+<!--		category_no=#{categoryNo}  where product_no=#{productNo} ]]>-->
+<!--	</update>-->
+
+
+</mapper>

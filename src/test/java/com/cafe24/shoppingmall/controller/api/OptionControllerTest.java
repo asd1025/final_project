@@ -60,11 +60,11 @@ public class OptionControllerTest {
         // 200
         List<OptionVo> list = new ArrayList<>();
         OptionVo op1=new OptionVo();
-        op1.setOptionName("디자인");
-        op1.setProductNo(3);
+        op1.setOptionName("색");
+        op1.setProductNo(1);
         OptionVo op2=new OptionVo();
-        op2.setOptionName("크기");
-        op2.setProductNo(3);
+        op2.setOptionName("사이즈");
+        op2.setProductNo(1);
         list.add(op1);
         list.add(op2);
 

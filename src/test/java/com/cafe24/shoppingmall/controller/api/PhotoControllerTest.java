@@ -61,16 +61,16 @@ public class PhotoControllerTest {
         // 200
         List<PhotoVo> list = new ArrayList<>();
         PhotoVo p1=new PhotoVo();
-        p1.setPath("/mall/img/a4.jpg");
+        p1.setPath("/mall/img/a3.jpg");
         p1.setProductNo(1);
         p1.setIsThumb(true);
 
         PhotoVo p2=new PhotoVo();
-        p2.setPath("/mall/img/a4.jpg");
-        p2.setProductNo(1);
+        p2.setPath("/mall/img/a1.jpg");
+        p2.setProductNo(2);
 
         list.add(p1);
-//        list.add(p2);
+        list.add(p2);
 
         ResultActions resultActions = mockMvc
                 .perform(post("/api/photo")

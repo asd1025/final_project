@@ -19,13 +19,16 @@ public class ProductService {
      *  ex. 나이키 에어맥스 990
      * **/
     public boolean regProduct(ProductVo productVo) {
+
         return productDao.insert(productVo);
     }
 
     /**
      *  등록된 상품을 다 보여준다. 이떄의 상품은 전체적인 상품(parent)을 말한다.
      * **/
-    public List<ProductVo> getList() {return  productDao.getList();}
+    public List<ProductVo> getList() {
+        return  productDao.getList();
+    }
 
 
     /**

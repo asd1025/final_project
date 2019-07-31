@@ -12,13 +12,13 @@ public class StockVo {
     private String instockDate;
     private int amount;
     private boolean isNonStock; // 비재고 여부
+    private int purchaseCount; // 구매 횟수
     private double optionPrice; // 추가금액
     private String productCode; // 상품코드
 
     private int productNo; // 카테고리를 제외한 상품 자체를 의미한다. ex) 나이키 에어맥스90
     private String productName; //상품 이름
-    private String path; // 대표사진 경로
-    private String price;
+    private String thumbImg; // 대표사진 경로
 
     public int getStockNo() {
         return stockNo;
@@ -68,6 +68,14 @@ public class StockVo {
         this.isNonStock = isNonStock;
     }
 
+    public int getPurchaseCount() {
+        return purchaseCount;
+    }
+
+    public void setPurchaseCount(int purchaseCount) {
+        this.purchaseCount = purchaseCount;
+    }
+
     public double getOptionPrice() {
         return optionPrice;
     }
@@ -100,20 +108,12 @@ public class StockVo {
         this.productName = productName;
     }
 
-    public String getPath() {
-        return path;
+    public String getThumbImg() {
+        return thumbImg;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
+    public void setThumbImg(String thumbImg) {
+        this.thumbImg = thumbImg;
     }
 
     @Override
@@ -122,15 +122,15 @@ public class StockVo {
                 "stockNo=" + stockNo +
                 ", finalOption='" + finalOption + '\'' +
                 ", optionNums='" + optionNums + '\'' +
-                ", isNonStock='" + isNonStock + '\'' +
+                ", instockDate='" + instockDate + '\'' +
                 ", amount=" + amount +
                 ", isNonStock=" + isNonStock +
+                ", purchaseCount=" + purchaseCount +
                 ", optionPrice=" + optionPrice +
                 ", productCode='" + productCode + '\'' +
                 ", productNo=" + productNo +
                 ", productName='" + productName + '\'' +
-                ", path='" + path + '\'' +
-                ", price='" + price + '\'' +
+                ", thumbImg='" + thumbImg + '\'' +
                 '}';
     }
 }

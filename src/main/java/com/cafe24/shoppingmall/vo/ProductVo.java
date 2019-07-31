@@ -126,20 +126,20 @@ public class ProductVo {
         this.material = material;
     }
 
-    public boolean isDisplay() {
+    public boolean getIsDisplay() {
         return isDisplay;
     }
 
-    public void setDisplay(boolean display) {
-        isDisplay = display;
+    public void setIsDisplay(boolean isDisplay) {
+        isDisplay = isDisplay;
     }
 
-    public boolean isSale() {
+    public boolean getIsSale() {
         return isSale;
     }
 
-    public void setSale(boolean sale) {
-        isSale = sale;
+    public void setIsSale(boolean isSale) {
+        isSale = isSale;
     }
 
     public double getWholesalePrice() {

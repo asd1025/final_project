@@ -4,9 +4,10 @@
 
     <insert id="insert" parameterType="productvo"  >
         <![CDATA[
-			insert into product (name, content, material, price, country
-			, wholesale_price, actual_price, category_no)
-			values (#{name},#{content},#{material},#{price},#{country},#{wholesalePrice},#{actualPrice},#{categoryNo})
+			insert into product (name, content,post_weight, material, price, country
+			,is_sale,is_display, wholesale_price, actual_price, category_no,product_code)
+			values (#{name},#{content},coalesce(#{postWeight},0),#{material},#{price},#{country}
+			,#{isSale},#{isDisplay},#{wholesalePrice},#{actualPrice},#{categoryNo},coalesce (#{productCode},null))
 		]]>
     </insert>
 
@@ -30,9 +31,9 @@
 	</delete>
 
 	<update id="update" parameterType="productvo">
-		<![CDATA[ update product set name=#{name} , content=#{content},updatedate=now(),
+		<![CDATA[ update product set name=#{name} , content=#{content},updatedate=now(),post_weight=#{postWeight},
 		material=#{material}, price=#{price}, country=#{country},is_display=#{isDisplay} ,
-		is_sale=#{isSale}, wholesale_price=#{wholesalePrice}, actual_price=#{actualPrice},
+		is_sale=#{isSale}, wholesale_price=#{wholesalePrice}, actual_price=#{actualPrice},product_code=#{productCode},
 		category_no=#{categoryNo}  where product_no=#{productNo} ]]>
 	</update>
 
