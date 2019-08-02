@@ -15,8 +15,8 @@ public class StockDao {
     @Autowired
     SqlSession sqlSession;
 
-    public int insert(List<StockVo> stockVo) {
-        return sqlSession.insert("stock.insert",stockVo);
+    public boolean insert(List<StockVo> stockVo) {
+        return stockVo.size()==sqlSession.insert("stock.insert",stockVo);
     }
 
     public List<StockVo> getListByProductNo(int productNo) {
@@ -38,16 +38,9 @@ public class StockDao {
         System.out.printf("vo: "+vo);
         return sqlSession.update("stock.update",vo);
     }
-//
-//    public ProductVo get(int no) {
-//        return sqlSession.selectOne("product.get",no);
-//    }
-//
-//    public int delete(int no) {
-//        return sqlSession.delete("product.delete",no);
-//    }
-//
-//    public int update(ProductVo productVo) {
-//        return sqlSession.update("product.update",productVo);
-//    }
+
+    public int delete(int no) {
+        return sqlSession.delete("stock.delete",no);
+    }
+
 }

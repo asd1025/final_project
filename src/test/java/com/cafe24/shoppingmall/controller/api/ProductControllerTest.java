@@ -3,7 +3,7 @@ package com.cafe24.shoppingmall.controller.api;
 import com.cafe24.shoppingmall.config.AppConfig;
 import com.cafe24.shoppingmall.config.TestWebConfig;
 import com.cafe24.shoppingmall.service.ProductService;
-import com.cafe24.shoppingmall.vo.ProductVo;
+import com.cafe24.shoppingmall.vo.*;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -18,6 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -56,18 +59,92 @@ public class ProductControllerTest {
     public void testRegProduct() throws Exception {
 
         // 200
+
         ProductVo productVo=new ProductVo();
-        productVo.setName("HBB반팔티셔츠2");
-        productVo.setContent("배색컬러 포인트로~~~~~~~~\n" +
-                "유니크한 슬림반팔티\n" +
+        productVo.setName("단가라티셔츠");
+        productVo.setContent("단가라를 포인트로 \n" +
+                "유니크한 색 조합\n" +
 
                 "여름내내 즐겨주세요!");
         productVo.setMaterial("면, 코튼 (100%)");
-        productVo.setPrice(14000);
+        productVo.setPrice(12000);
         productVo.setCountry("중국");
-        productVo.setWholesalePrice(8000);
-        productVo.setActualPrice(9000);
+        productVo.setWholesalePrice(7000);
+        productVo.setActualPrice(12000);
         productVo.setCategoryNo(2);
+        // 사진
+        List<PhotoVo> list1 = new ArrayList<>();
+        PhotoVo p1=new PhotoVo();
+        p1.setPath("/mall/img/c3.jpg");
+        p1.setProductNo(3);
+        p1.setIsThumb(1);
+
+        PhotoVo p2=new PhotoVo();
+        p2.setPath("/mall/img/c1.jpg");
+        p2.setProductNo(3);
+
+        list1.add(p1);
+        list1.add(p2);
+
+        //옵션
+        List<OptionVo> list2 = new ArrayList<>();
+        OptionVo op1=new OptionVo();
+        op1.setOptionName("색");
+        op1.setProductNo(3);
+        OptionVo op2=new OptionVo();
+        op2.setOptionName("사이즈");
+        op2.setProductNo(3);
+        list2.add(op1);
+        list2.add(op2);
+
+        //옵션디테일
+        List<OptionDetailVo> list3 = new ArrayList<>();
+        OptionDetailVo opd1=new OptionDetailVo();
+        opd1.setOptionNo(1);
+        opd1.setDetailName("초록");
+
+        OptionDetailVo opd2=new OptionDetailVo();
+        opd2.setDetailName("S");
+        opd2.setOptionNo(2);
+
+        list3.add(opd1);
+        list3.add(opd2);
+        opd2=new OptionDetailVo();
+        opd1=new OptionDetailVo();
+        opd1.setOptionNo(1);
+        opd1.setDetailName("노랑");
+        opd2.setDetailName("M");
+        opd2.setOptionNo(2);
+        list3.add(opd1);
+        list3.add(opd2);
+
+
+        // 상품재고
+        List<StockVo> list=new ArrayList<>();
+        StockVo stockVo=new StockVo();
+        stockVo.setFinalOption("초록/S");
+        stockVo.setOptionNums("1/2");
+        stockVo.setInstockDate("2019-08-02");
+        stockVo.setAmount(40);
+        stockVo.setPurchaseCount(10);
+        stockVo.setProductNo(3);
+        stockVo.setProductCode("ZBDF0111");
+        list.add(stockVo);
+
+        stockVo=new StockVo();
+        stockVo.setFinalOption("노랑/M");
+        stockVo.setOptionNums("3/4");
+        stockVo.setInstockDate("2019-08-02");
+        stockVo.setAmount(40);
+        stockVo.setPurchaseCount(10);
+        stockVo.setProductNo(3);
+        stockVo.setProductCode("ZBDF0112");
+        list.add(stockVo);
+
+        productVo.setPhotos(list1);
+        productVo.setOptions(list2);
+        productVo.setOptionDetails(list3);
+        productVo.setStocks(list);
 
 
         ResultActions resultActions = mockMvc
@@ -97,14 +174,14 @@ public class ProductControllerTest {
 
         //200
         ResultActions resultActions = mockMvc
-                .perform(get("/api/product/{no}",1).contentType(MediaType.APPLICATION_JSON));
+                .perform(get("/api/product/{no}",3).contentType(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isOk()).andDo(print())
                 .andExpect(jsonPath("$.result", is("success")));
 
         // 400
         resultActions = mockMvc
-                .perform(get("/api/product/{id}",5).contentType(MediaType.APPLICATION_JSON));
+                .perform(get("/api/product/{id}",100).contentType(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isBadRequest()).andDo(print())
                 .andExpect(jsonPath("$.result", is("fail")));

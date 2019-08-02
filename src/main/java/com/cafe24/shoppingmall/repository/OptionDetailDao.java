@@ -12,8 +12,8 @@ public class OptionDetailDao {
     @Autowired
     private SqlSession sqlSession;
 
-    public int insert(List<OptionDetailVo> optionDetailVo) {
-        return sqlSession.insert("option_detail.insert",optionDetailVo);
+    public boolean insert(List<OptionDetailVo> optionDetailVo) {
+        return optionDetailVo.size()==sqlSession.insert("option_detail.insert",optionDetailVo);
     }
 
     public List<OptionDetailVo> getList() {

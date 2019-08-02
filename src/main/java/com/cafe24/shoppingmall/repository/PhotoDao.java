@@ -13,8 +13,8 @@ public class PhotoDao {
     @Autowired
     SqlSession sqlSession;
 
-    public int insert(List<PhotoVo> photoVo) {
-        return sqlSession.insert("photo.insert",photoVo);
+    public boolean insert(List<PhotoVo> photoVo) {
+        return photoVo.size()==sqlSession.insert("photo.insert",photoVo);
     }
 
     public List<PhotoVo> getListByProductNo(int productNo) {

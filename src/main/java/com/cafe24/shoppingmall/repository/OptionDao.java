@@ -13,8 +13,8 @@ public class OptionDao {
     @Autowired
     private SqlSession sqlSession;
 
-    public int insert(List<OptionVo> optionVo) {
-        return sqlSession.insert("option.insert",optionVo);
+    public boolean insert(List<OptionVo> optionVo) {
+        return optionVo.size()==sqlSession.insert("option.insert",optionVo);
     }
 
     public List<OptionVo> getList() {

@@ -13,7 +13,7 @@ public class OptionDetailService {
     private OptionDetailDao optionDetailDao;
 
     public boolean regOptionDetail(List<OptionDetailVo> optionDetailVo) {
-        return 0!=optionDetailDao.insert(optionDetailVo);
+        return optionDetailDao.insert(optionDetailVo);
     }
 
     public List<OptionDetailVo> getList() {

@@ -6,16 +6,6 @@ public class OptionVo {
     private int optionNo;
     private  String optionName;
     private int productNo;
-    private List<OptionDetailVo> optionDetails;
-
-
-    public List<OptionDetailVo> getOptionDetails() {
-        return optionDetails;
-    }
-
-    public void setOptionDetails(List<OptionDetailVo> optionDetails) {
-        this.optionDetails = optionDetails;
-    }
 
     public int getOptionNo() {
         return optionNo;
@@ -46,8 +36,6 @@ public class OptionVo {
         return "OptionVo{" +
                 "optionNo=" + optionNo +
                 ", optionName='" + optionName + '\'' +
-                ", productNo=" + productNo +
-                ", optionDetails=" + optionDetails +
-                '}';
+                ", productNo=" + productNo +  '}';
     }
 }

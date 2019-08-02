@@ -13,8 +13,8 @@ public class OptionService {
     @Autowired
     private OptionDao optionDao;
 
-    public boolean regOption(List<OptionVo> optionVo) {
-        return 0!=optionDao.insert(optionVo);
+    public boolean regOption(List<OptionVo> list) {
+        return optionDao.insert(list);
     }
 
     public List<OptionVo> getList() {

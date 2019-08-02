@@ -31,7 +31,7 @@ public class StockService {
      *
      * **/
     public boolean regStock(List<StockVo> list) {
-        return 0!=stockDao.insert(list);
+        return stockDao.insert(list);
     }
 
     /**
@@ -63,11 +63,10 @@ public class StockService {
     public boolean updateStock(StockVo vo) {
         return 0!=stockDao.updateStock(vo);
     }
-//
-//     // 수정이 필요한 부분,,,
-//    public boolean deleteProduct(int no) {
-//        return 0!=productDao.delete(no);
-//    }
+
+    public boolean deleteStock(int no) {
+        return 0!=stockDao.delete(no);
+    }
 //
 //    public boolean updateProduct(ProductVo productVo) {
 //        return 0!=productDao.update(productVo);

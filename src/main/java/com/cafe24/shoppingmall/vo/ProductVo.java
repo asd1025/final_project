@@ -21,6 +21,15 @@ public class ProductVo {
     private List<PhotoVo> photos;
     private List<StockVo> stocks;
     private List<OptionVo> options;
+    private List<OptionDetailVo> optionDetails;
+
+    public List<OptionDetailVo> getOptionDetails() {
+        return optionDetails;
+    }
+
+    public void setOptionDetails(List<OptionDetailVo> optionDetails) {
+        this.optionDetails = optionDetails;
+    }
 
     public List<PhotoVo> getPhotos() {
         return photos;

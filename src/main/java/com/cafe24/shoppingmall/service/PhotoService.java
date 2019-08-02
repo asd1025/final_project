@@ -16,7 +16,7 @@ public class PhotoService {
     private PhotoDao photoDao;
 
     public boolean regPhotos(List<PhotoVo> photoVo) {
-        return photoDao.insert(photoVo)!=0;
+        return photoDao.insert(photoVo);
     }
 
     public List<PhotoVo> getListByProductNo(int productNo) {

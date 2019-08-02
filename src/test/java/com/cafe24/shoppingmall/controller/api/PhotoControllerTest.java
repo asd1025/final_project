@@ -2,7 +2,6 @@ package com.cafe24.shoppingmall.controller.api;
 
 import com.cafe24.shoppingmall.config.AppConfig;
 import com.cafe24.shoppingmall.config.TestWebConfig;
-import com.cafe24.shoppingmall.service.OptionDetailService;
 import com.cafe24.shoppingmall.service.PhotoService;
 import com.cafe24.shoppingmall.vo.OptionDetailVo;
 import com.cafe24.shoppingmall.vo.PhotoVo;
@@ -61,12 +60,12 @@ public class PhotoControllerTest {
         // 200
         List<PhotoVo> list = new ArrayList<>();
         PhotoVo p1=new PhotoVo();
-        p1.setPath("/mall/img/a3.jpg");
-        p1.setProductNo(1);
-        p1.setIsThumb(0);
+        p1.setPath("/mall/img/b3.jpg");
+        p1.setProductNo(2);
+        p1.setIsThumb(1);
 
         PhotoVo p2=new PhotoVo();
-        p2.setPath("/mall/img/a1.jpg");
+        p2.setPath("/mall/img/b1.jpg");
         p2.setProductNo(2);
 
         list.add(p1);

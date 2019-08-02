@@ -86,19 +86,19 @@ public class StockController {
         if(stockService.updateStock(vo)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
     }
-//
-//    /**
-//     * 해당 번호의 상품을 삭제한다
-//     */
-//    @ApiOperation(value="해당 번호의 상품 삭제")
-//    @ApiImplicitParam(name="no",value="no",required = true, dataType = "int", paramType = "path", defaultValue = "")
-//    @DeleteMapping(value="/{no}")
-//    public ResponseEntity<JSONResult> deleteProduct(@PathVariable int no) {
-//        if(productService.deleteProduct(no)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
-//    }
-//
-//
+
+    /**
+     * 해당 번호의 상품을 삭제한다
+     */
+    @ApiOperation(value="해당 상품재고 삭제")
+    @ApiImplicitParam(name="no",value="no",required = true, dataType = "int", paramType = "path", defaultValue = "")
+    @DeleteMapping(value="/{no}")
+    public ResponseEntity<JSONResult> deleteStock(@PathVariable int no) {
+        if(stockService.deleteStock(no)) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("success"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
+    }
+
+
     }
 
 

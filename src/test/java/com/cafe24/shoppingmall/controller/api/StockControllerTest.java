@@ -206,6 +206,24 @@ public class StockControllerTest {
 
     }
 //
-//
+    @Test
+    public void testDeleteStock() throws Exception {
+
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(delete("/api/stock/{no}",4).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400
+        resultActions = mockMvc
+                .perform(delete("/api/stock/{no}",100).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+
+    }
 
 }
