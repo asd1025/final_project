@@ -22,6 +22,9 @@ public class PhotoService {
     public List<PhotoVo> getListByProductNo(int productNo) {
         return photoDao.getListByProductNo(productNo);
     }
+    public PhotoVo getThumbImgByProducNo(int productNo) {
+        return photoDao.getThumbImgByProducNo(productNo);
+    }
 
 
     /***

@@ -2,13 +2,10 @@ package com.cafe24.shoppingmall.controller.api;
 
 import com.cafe24.shoppingmall.config.AppConfig;
 import com.cafe24.shoppingmall.config.TestWebConfig;
-import com.cafe24.shoppingmall.service.ProductService;
 import com.cafe24.shoppingmall.service.StockService;
-import com.cafe24.shoppingmall.vo.ProductVo;
 import com.cafe24.shoppingmall.vo.StockVo;
 import com.google.gson.Gson;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,27 +58,23 @@ public class StockControllerTest {
 
         // 200
         StockVo stockVo=new StockVo();
-        stockVo.setFinalOption("검정/L");
-        stockVo.setOptionNums("1/4");
+        stockVo.setFinalOption("빨강/XL");
+        stockVo.setOptionNums("3/2");
         stockVo.setInstockDate("2019-07-01");
         stockVo.setAmount(40);
         stockVo.setPurchaseCount(10);
         stockVo.setProductNo(1);
         stockVo.setProductCode("ZBTA0111");
-        stockVo.setProductName("HBB반팔티셔츠2");
-        stockVo.setThumbImg("/mall/img/a4.jpg");
         list.add(stockVo);
 
         stockVo=new StockVo();
-        stockVo.setFinalOption("빨강/L");
-        stockVo.setOptionNums("3/4");
+        stockVo.setFinalOption("초록/S");
+        stockVo.setOptionNums("5/6");
         stockVo.setInstockDate("2019-07-01");
         stockVo.setAmount(40);
         stockVo.setPurchaseCount(10);
         stockVo.setProductNo(1);
         stockVo.setProductCode("ZBTA0111");
-        stockVo.setProductName("HBB반팔티셔츠2");
-        stockVo.setThumbImg("/mall/img/a4.jpg");
         list.add(stockVo);
 
 
@@ -93,101 +86,126 @@ public class StockControllerTest {
         resultActions.andExpect(status().isOk()).andDo(print()).
                 andExpect(jsonPath("$.result", is("success")));
     }
-////    @Ignore
-//    @Test
-//    public void testGetProductList() throws Exception {
-//
-//        // 200
-//        ResultActions resultActions = mockMvc
-//                .perform(get("/api/product").contentType(MediaType.APPLICATION_JSON));
-//
-//        resultActions.andExpect(status().isOk()).andDo(print())
-//                .andExpect(jsonPath("$.result", is("success")));
-//
-//
-//    }
-////    @Ignore
-//    @Test
-//    public void testGetProductByNo() throws Exception {
-//
-//        //200
-//        ResultActions resultActions = mockMvc
-//                .perform(get("/api/product/{no}",1).contentType(MediaType.APPLICATION_JSON));
-//
-//        resultActions.andExpect(status().isOk()).andDo(print())
-//                .andExpect(jsonPath("$.result", is("success")));
-//
-//        // 400
+//    @Ignore
+    @Test
+    public void testGetListByProductNo() throws Exception {
+
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(get("/api/stock/product/{productNo}",1).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400
+        resultActions = mockMvc
+                .perform(get("/api/stock/product/{productNo}",100).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+
+    }
+//    @Ignore
+    @Test
+    public void testGetStockByStockNo() throws Exception {
+
+        //200
+        ResultActions resultActions = mockMvc
+                .perform(get("/api/stock/{stockNo}",1).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400
+        resultActions = mockMvc
+                .perform(get("/api/stock/{stockNo}",100).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+    }
+    @Test
+    public void testUpdateAfterOrder() throws Exception {
+
+        int qnty =2;
+
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(put("/api/stock/quantity/{stockNo}",1) .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(qnty)));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400 존재하지 않는 상품재고번호
+        resultActions = mockMvc
+                .perform(put("/api/stock/quantity/{stockNo}",100) .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(qnty)));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+        //400 재고 수량보다 초과하는 수량을 주문하는 경우
+        qnty=100;
+        resultActions = mockMvc
+                .perform(put("/api/stock/quantity/{stockNo}",1) .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(qnty)));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+    }
+    @Test
+    public void testUpdate() throws Exception {
+        StockVo vo=new StockVo();
+        vo.setStockNo(5);
+        vo.setFinalOption("초록/S");
+        vo.setOptionNums("5/6");
+        vo.setInstockDate("2019-08-01");
+        vo.setAmount(20);
+        vo.setPurchaseCount(20);
+        vo.setProductNo(1);
+        vo.setOptionPrice(3000);
+        vo.setProductCode("ZBTA0225");
+        vo.setThumbImg("/mall/img/b3.jpg");
+
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(put("/api/stock") .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(vo)));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400 존재하지 않는 상품재고번호
 //        resultActions = mockMvc
-//                .perform(get("/api/product/{id}",5).contentType(MediaType.APPLICATION_JSON));
+//                .perform(put("/api/stock") .contentType(MediaType.APPLICATION_JSON)
+//                        .content(new Gson().toJson(vo)));
 //
 //        resultActions.andExpect(status().isBadRequest()).andDo(print())
 //                .andExpect(jsonPath("$.result", is("fail")));
-//    }
-////    @Ignore
-//    @Test
-//    public void testDeleteCartProduct() throws Exception {
-//
-//        // 200
-//        ResultActions resultActions = mockMvc
-//                .perform(delete("/api/product/{no}",4).contentType(MediaType.APPLICATION_JSON));
-//
-//        resultActions.andExpect(status().isOk()).andDo(print())
-//                .andExpect(jsonPath("$.result", is("success")));
-//
-//        // 400
-//        resultActions = mockMvc
-//                .perform(delete("/api/product/{no}",7).contentType(MediaType.APPLICATION_JSON));
-//
-//        resultActions.andExpect(status().isBadRequest()).andDo(print())
-//                .andExpect(jsonPath("$.result", is("fail")));
-//
-//
-//    }
-//
-//    @Test
-//    public void testUpdateCartProduct() throws Exception {
-//
-//        ProductVo productVo=new ProductVo();
-//        productVo.setProductNo(3);
-//        productVo.setName("HBB반팔티셔츠");
-//        productVo.setContent("배색컬러 포인트로!!!!!!\n" +
-//                "유니크한 슬림반팔티\n" +
-//                "MD COMMENT \n" +
-//                "───────────────────\n" +
-//                "유니크한 무드의 배색컬러 티셔츠에요:)\n" +
-//                "라인이 예쁘게 드러나는 슬림한 핏이구요\n" +
-//                "포인트 있는 배색된 컬러들로 제작되어\n" +
-//                "유니크한 느낌이 물씬 느껴진답니다-!\n" +
-//                "모델처럼 데님와이드팬츠와\n" +
-//                "매치해주셔도 좋구요\n" +
-//                "숏팬츠,스커트에 매치해도 잘 어울려요!\n" +
-//                "신축성이 좋아 편안하게 착용되어\n" +
-//                "여름내내 즐겨주세요!");
-//        productVo.setMaterial("면, 코튼 (100%)");
-//        productVo.setPrice(14000);
-//        productVo.setCountry("중국");
-//        productVo.setWholesalePrice(8000);
-//        productVo.setActualPrice(9000);
-//        productVo.setCategoryNo(2);
-//
-//        // 200
-//        ResultActions resultActions = mockMvc
-//                .perform(put("/api/product") .contentType(MediaType.APPLICATION_JSON)
-//                        .content(new Gson().toJson(productVo)));
-//
-//        resultActions.andExpect(status().isOk()).andDo(print())
-//                .andExpect(jsonPath("$.result", is("success")));
-//
-//        // 400
-////        resultActions = mockMvc
-////                .perform(put("/api/product/{no}") .contentType(MediaType.APPLICATION_JSON)
-////                        .content(new Gson().toJson(productVo)));
-////
-////        resultActions.andExpect(status().isBadRequest()).andDo(print())
-////                .andExpect(jsonPath("$.result", is("fail")));
+    }
+//    @Ignore
+    @Test
+    public void testDeleteCartProduct() throws Exception {
+
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(delete("/api/product/{no}",4).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400
+        resultActions = mockMvc
+                .perform(delete("/api/product/{no}",7).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
+
+
+    }
 //
 //
-//    }
 
 }

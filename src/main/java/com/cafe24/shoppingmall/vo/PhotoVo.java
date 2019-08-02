@@ -3,7 +3,7 @@ package com.cafe24.shoppingmall.vo;
 public class PhotoVo {
     private int no;
     private String path;
-    private boolean isThumb;
+    private int isThumb;
     private int productNo;
 
     public int getNo() {
@@ -22,12 +22,12 @@ public class PhotoVo {
         this.path = path;
     }
 
-    public boolean getIsThumb() {
+    public int getIsThumb() {
         return isThumb;
     }
 
-    public void setIsThumb(boolean thumb) {
-        isThumb = thumb;
+    public void setIsThumb(int isThumb) {
+        this.isThumb = isThumb;
     }
 
     public int getProductNo() {

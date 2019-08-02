@@ -63,7 +63,7 @@ public class PhotoControllerTest {
         PhotoVo p1=new PhotoVo();
         p1.setPath("/mall/img/a3.jpg");
         p1.setProductNo(1);
-        p1.setIsThumb(true);
+        p1.setIsThumb(0);
 
         PhotoVo p2=new PhotoVo();
         p2.setPath("/mall/img/a1.jpg");
@@ -124,7 +124,7 @@ public class PhotoControllerTest {
         PhotoVo p1=new PhotoVo();
         p1.setPath("/mall/img/a4.jpg");
         p1.setProductNo(1);
-        p1.setIsThumb(true);
+        p1.setIsThumb(1);
 
         PhotoVo p2=new PhotoVo();
         p2.setPath("/mall/img/a4.jpg");
@@ -179,6 +179,23 @@ public class PhotoControllerTest {
         resultActions.andExpect(status().isBadRequest()).andDo(print())
                 .andExpect(jsonPath("$.result", is("fail")));
 
+    }
+
+    @Test
+    public void testGetThumbImgByProducNo() throws Exception {
+        // 200
+        ResultActions resultActions = mockMvc
+                .perform(get("/api/photo/thumb/{productNo}",1).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$.result", is("success")));
+
+        // 400 존재하지 않는 상품 번호
+        resultActions = mockMvc
+                .perform(get("/api/photo/thumb/{productNo}",100).contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isBadRequest()).andDo(print())
+                .andExpect(jsonPath("$.result", is("fail")));
     }
 
 }

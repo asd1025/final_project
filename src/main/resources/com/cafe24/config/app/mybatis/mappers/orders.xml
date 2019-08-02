@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="orders">
 	<resultMap id="ordersResultMap" type="OrdersVo">
-		<id property="sendName" column="send_name" />
+		<id property="no" column="no"/>
+		<result property="sendName" column="send_name" />
 		<result property="sendZipcode" column="send_zipcode"/>
 		<result property="sendAddress" column="send_address"/>
 		<result property="sendPhone" column="send_phone"/>

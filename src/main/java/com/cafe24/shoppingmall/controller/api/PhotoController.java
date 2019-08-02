@@ -1,11 +1,8 @@
-package com.cafe24.shoppingmall.controller;
+package com.cafe24.shoppingmall.controller.api;
 
 import com.cafe24.shoppingmall.dto.JSONResult;
-import com.cafe24.shoppingmall.service.OptionDetailService;
 import com.cafe24.shoppingmall.service.PhotoService;
-import com.cafe24.shoppingmall.vo.OptionDetailVo;
 import com.cafe24.shoppingmall.vo.PhotoVo;
-import com.cafe24.shoppingmall.vo.ProductVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -58,7 +55,17 @@ public class PhotoController {
 		if(list.size()!=0) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
 	}
-
+	/**
+	 * 상품의 대표사진 경로 가져오기
+	 */
+	@ApiOperation(value="상품 대표사진 보기")
+	@ApiImplicitParam(name="productNo",value="상품 번호",required = true, dataType = "int", paramType = "path", defaultValue = "")
+	@GetMapping(value="/thumb/{productNo}")
+	public ResponseEntity<JSONResult> getThumbImgByProducNo(@PathVariable int productNo) {
+		PhotoVo vo=photoService.getThumbImgByProducNo(productNo);
+		if(vo!=null) return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(vo));
+		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail("fail"));
+	}
 	/***
 	 * 사진 수정
 	 * 수정은 기존 사진을 다 삭제하고, 다시 insert

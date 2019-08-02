@@ -30,7 +30,7 @@ public class DBConfig {
 		basicDataSource.setPassword(env.getProperty("jdbc.password"));
 		basicDataSource.setInitialSize(env.getProperty("jdbc.initialSize", Integer.class));
 		basicDataSource.setMaxActive(env.getProperty("jdbc.initialSize", Integer.class));
-		
+		basicDataSource.setValidationQuery(env.getProperty("select 1"));
 		return basicDataSource;
 	}
 	

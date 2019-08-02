@@ -63,10 +63,10 @@ public class OptionDetailControllerTest {
         List<OptionDetailVo> list = new ArrayList<>();
         OptionDetailVo op1=new OptionDetailVo();
         op1.setOptionNo(1);
-        op1.setDetailName("빨강");
+        op1.setDetailName("초록");
 
         OptionDetailVo op2=new OptionDetailVo();
-        op2.setDetailName("L");
+        op2.setDetailName("S");
         op2.setOptionNo(2);
 
         list.add(op1);

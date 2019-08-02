@@ -25,7 +25,12 @@
 	<delete id="delete"  parameterType="int">
 		<![CDATA[ delete from photo where product_no=#{value} ]]>
 	</delete>
-
+	<select id="getThumbImgByProducNo"  parameterType="int"  resultType="photovo">
+		<![CDATA[
+			select no, path, product_no as productNo,  is_thumb as isThumb from photo where product_no=#{value} and
+			is_thumb=1
+		]]>
+	</select>
 
 
 </mapper>

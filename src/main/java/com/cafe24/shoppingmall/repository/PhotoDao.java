@@ -25,9 +25,11 @@ public class PhotoDao {
         return sqlSession.delete("photo.delete",no);
     }
 
-//    public List<ProductVo> getList() {
-//        return sqlSession.selectList("product.getList");
-//    }
+    // 대표 사진 뽑아내기
+    public PhotoVo getThumbImgByProducNo(int productNo) {
+        return sqlSession.selectOne("photo.getThumbImgByProducNo",productNo);
+    }
+
 //
 //    public ProductVo get(int no) {
 //        return sqlSession.selectOne("product.get",no);
