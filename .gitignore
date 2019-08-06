@@ -3,6 +3,7 @@
 /.project
 /.settings/
 jdbc.properties
+Tokens.java
 
 
 # Created by https://www.gitignore.io/api/java,macos,maven,windows,eclipse
