@@ -44,7 +44,8 @@ public class ProductService {
        for(ProductVo vo :list){
            vo.setPhotos(photoDao.getListByProductNo(no));
            vo.setOptions(optionDao.getListByProductNo(no));
-           vo.setOptionDetails(optionDetailDao);
+//           고쳐야해!!!!!!!!!!!!!!!!!!!!! ㄷㄴㄹㅇㄴㄹㄴㅇㄹㄴㅇㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ
+//           vo.setOptionDetails(optionDetailDao);
        }
         return  productDao.getList();
     }
